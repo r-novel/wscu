@@ -6,7 +6,14 @@ Utility have been wrote using C language and ncurses library;
 
 ## Build
 
-First of all you need install ncurses library using apt-get or another package manager;
+First of all you need install ncurses library using apt-get or another package manager:
+
+```
+$ sudo apt-get install -y libncurses5-dev libncurses5
+```
+
+Then build test program:
+
 ```
 $ gcc main.c -o out -lncurses
 ```
