@@ -15,14 +15,20 @@ $ sudo apt-get install -y libncurses5-dev libncurses5
 Then build test program:
 
 ```
-$ gcc main.c -o out -lncurses
+$ make
 ```
+Clean obj and exec files:
+
+```
+$ make clean
+```
+
 (will be updated)
 
 ## Usage
 
 ```
-$ ./out
+$ ./bin/wscu
 ```
 (will be updated)
 
