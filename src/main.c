@@ -9,7 +9,8 @@ void tmux() {
 	if (res < 0) {
 		switch (res) {
 			case -1: fprintf(stderr, "[main] error with open output file; error code is: %d\n", res); break;
-			case -2: fprintf(stderr, "[main] error with curl init; error code is: %d\n", res); break;
+			case -2: fprintf(stderr, "[main] error with redirect; error code is: %d\n", res); break;
+			case -3: fprintf(stderr, "[main] error with curl init; error code is: %d\n", res); break;
 			default: break;
 		}
 	}
@@ -18,17 +19,17 @@ void tmux() {
 }
 
 int main(int argc, char** argv) {
-	// char mesg[] = "Hello world!";
-	// int row, col;				
-	// initscr();				
-	// getmaxyx(stdscr, row, col);		
-	// mvprintw(row / 2, (col - strlen(mesg)) / 2, "%s", mesg);
+	char mesg[] = "Hello world!";
+	int row, col;				
+	initscr();				
+	getmaxyx(stdscr, row, col);		
+	mvprintw(row / 2, (col - strlen(mesg)) / 2, "%s", mesg);
 	tmux();
-	// mvprintw(row - 2, 0, "This screen has %d rows and %d columns\n", row, col);
-	// printw("Try resizing your window(if possible) and then run this program again");
-	// refresh();
-	// getch();
-	// endwin();
+	mvprintw(row - 2, 0, "This screen has %d rows and %d columns\n", row, col);
+	printw("Try resizing your window(if possible) and then run this program again");
+	refresh();
+	getch();
+	endwin();
 	
 	return 0;
 }
