@@ -1,13 +1,13 @@
 #include "get-tmux.h"
 
 size_t tmux_fwrite(void *buf, size_t size, size_t nmemb, void* stream) {
-  struct tmux* out = (struct tmux*)stream;
-  if(out && !out->stream) {
-    out->stream = fopen(out->filename, "w");
-    if(!out->stream)
-      return -1;
+	struct tmux* out = (struct tmux*)stream;
+	if(out && !out->stream) {
+		out->stream = fopen(out->filename, "w");
+		if(!out->stream)
+			return -1;
   }
-  return fwrite(buf, size, nmemb, out->stream);
+	return fwrite(buf, size, nmemb, out->stream);
 }
 
 char* get_name(const char* url) {
@@ -41,23 +41,23 @@ int get_tmux(const char* url) {
 		else {
 			res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
 			if((res == CURLE_OK) && ((resp_code / 100) != 3)) {
-        fprintf(stderr, "not a redirect;\n");
-        return -2;
-      } else {
-        res = curl_easy_getinfo(curl, CURLINFO_REDIRECT_URL, &location);
-        if((res == CURLE_OK) && location) {
-          curl_easy_setopt(curl, CURLOPT_URL, location);
-          curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, tmux_fwrite);
-          curl_easy_setopt(curl, CURLOPT_WRITEDATA, &out);
-          curl_easy_perform(curl);
+				fprintf(stderr, "not a redirect;\n");
+				return -2;
+			} else {
+				res = curl_easy_getinfo(curl, CURLINFO_REDIRECT_URL, &location);
+				if((res == CURLE_OK) && location) {
+					curl_easy_setopt(curl, CURLOPT_URL, location);
+					curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, tmux_fwrite);
+					curl_easy_setopt(curl, CURLOPT_WRITEDATA, &out);
+					curl_easy_perform(curl);
         }
       }
 		}
 		curl_easy_cleanup(curl);		
 		if (out.stream)
 			fclose(out.stream);
-	  curl_global_cleanup();
-
+		
+		curl_global_cleanup();
 		return res;
 	}
 	return -3;
