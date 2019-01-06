@@ -11,17 +11,14 @@ size_t tmux_fwrite(void *buf, size_t size, size_t nmemb, void* stream) {
 }
 
 char* get_name(const char* url) {
-	char* out = NULL;
 	if (url) {
 		char* c = strrchr(url, '/');
-		if (c) {
-			*c = '\0';
-			sprintf(out, "%s", c + 1);
-		} else {
+		if (c)
+			return c + 1;
+		else {
 			fprintf(stderr, "[get-name] error with get token;\n");
 			return NULL;
 		}
-		return out;	
 	}
 	return NULL;
 }
@@ -29,8 +26,7 @@ char* get_name(const char* url) {
 int get_tmux(const char* url) {
 	CURL* curl;
 	CURLcode res;
-	// struct tmux out = {(const char*)get_name(url), NULL};
-	struct tmux out = {"./bin/tmux-2.8.tar.gz", NULL};
+	struct tmux out = {(const char*)get_name(url), NULL};
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 	
 	curl = curl_easy_init();
