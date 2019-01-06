@@ -8,6 +8,7 @@ LDFLAGS := -lm -lncurses -lcurl
 
 PATH-PROJECT := $(shell pwd)
 PATH-BIN := $(PATH-PROJECT)/bin
+PATH-DOWNLOADS := $(PATH-PROJECT)/downloads
 PATH-SRC := $(PATH-PROJECT)/src
 PATH-OBJECTS := $(PATH-BIN)
 
@@ -16,14 +17,16 @@ PATH-OBJECTS := $(PATH-BIN)
 .PHONY: all clean
 
 default: build
-build: ensure-bin wscu
+build: ensure-dirs wscu
 
 clean:
 	rm -rvf \
-		$(PATH-OBJECTS)/*
+		$(PATH-OBJECTS)/* \
+		$(PATH-DOWNLOADS)/*
 
-ensure-bin:
+ensure-dirs:
 	mkdir -p $(PATH-BIN)
+	mkdir -p $(PATH-DOWNLOADS)
 
 $(PATH-OBJECTS)/main.o: $(PATH-SRC)/main.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@

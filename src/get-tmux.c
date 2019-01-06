@@ -28,8 +28,10 @@ int get_tmux(const char* url) {
 	char* location;
 	long resp_code;
 	CURLcode res;
+	char name[FILENAME_MAX];
+	snprintf(name, sizeof(name), "%s%s", "./downloads/", get_name(url));
 
-	struct tmux out = {(const char*)get_name(url), NULL};
+	struct tmux out = {name, NULL};
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 	
 	curl = curl_easy_init();
@@ -53,10 +55,11 @@ int get_tmux(const char* url) {
         }
       }
 		}
-		curl_easy_cleanup(curl);		
+				
 		if (out.stream)
 			fclose(out.stream);
-		
+
+		curl_easy_cleanup(curl);
 		curl_global_cleanup();
 		return res;
 	}
