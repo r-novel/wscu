@@ -4,13 +4,12 @@ CC := gcc
 
 CFLAGS := -O1 -std=c99 -pipe
 WFLAGS := -Wall -Werror
-LDFLAGS := -lm -lncurses
+LDFLAGS := -lm -lncurses -lcurl
 
 PATH-PROJECT := $(shell pwd)
 PATH-BIN := $(PATH-PROJECT)/bin
 PATH-SRC := $(PATH-PROJECT)/src
 PATH-OBJECTS := $(PATH-BIN)
-
 
 .DEFAULT: default
 .PHONY: all default build
@@ -18,7 +17,6 @@ PATH-OBJECTS := $(PATH-BIN)
 
 default: build
 build: ensure-bin wscu
-
 
 clean:
 	rm -rvf \
@@ -30,6 +28,10 @@ ensure-bin:
 $(PATH-OBJECTS)/main.o: $(PATH-SRC)/main.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
+$(PATH-OBJECTS)/get-tmux.o: $(PATH-SRC)/get-tmux.c
+	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@ 
+
 wscu: \
-	$(PATH-OBJECTS)/main.o
+	$(PATH-OBJECTS)/main.o \
+	$(PATH-OBJECTS)/get-tmux.o
 	$(CC) $(CFLAGS) $(WFLAGS) -o $(PATH-BIN)/$@ $+ $(LDFLAGS)
