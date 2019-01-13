@@ -23,13 +23,53 @@ char* get_name(const char* url) {
 	return NULL;
 }
 
+char* get_home_dir() {
+	struct passwd* pw = getpwuid(getuid());
+	char* home = pw->pw_dir;
+	if (home) {
+		return home;
+	}
+	return NULL;
+}
+
+char* get_tmp_dir() {
+	char name[FILENAME_MAX];
+	char* h = get_home_dir();
+	if (h) {
+		snprintf(name, sizeof(name), "%s/%s", h, ".wscu_tmp");
+		return name;
+	}
+	return NULL;
+}
+
+int create_dir() {
+	struct stat st = {0};
+	char* t = get_tmp_dir();
+	if (t) {
+		if (stat(t, &st) == -1) {
+			mkdir(t, 0777);
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	return -1;
+}
+
 int get_tmux(const char* url) {
 	CURL* curl;
 	char* location;
 	long resp_code;
 	CURLcode res;
 	char name[FILENAME_MAX];
-	snprintf(name, sizeof(name), "%s%s", "./downloads/", get_name(url));
+	int ok = create_dir();
+	if (ok) {
+		snprintf(name, sizeof(name), "%s/%s", create_dir(), get_name(url));
+	}
+
+	char cwd[1024];
+    getcwd(cwd, sizeof(cwd));
+    printf("\tWorkdir: %s\n", cwd);
 
 	struct tmux out = {name, NULL};
 	curl_global_init(CURL_GLOBAL_DEFAULT);
