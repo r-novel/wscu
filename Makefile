@@ -8,7 +8,6 @@ LDFLAGS := -lm -lncurses -lcurl
 
 PATH-PROJECT := $(shell pwd)
 PATH-BIN := $(PATH-PROJECT)/bin
-PATH-DOWNLOADS := $(PATH-PROJECT)/downloads
 PATH-SRC := $(PATH-PROJECT)/src
 PATH-OBJECTS := $(PATH-BIN)
 
@@ -21,12 +20,10 @@ build: ensure-dirs wscu
 
 clean:
 	rm -rvf \
-		$(PATH-OBJECTS)/* \
-		$(PATH-DOWNLOADS)/*
+		$(PATH-OBJECTS)/*
 
 ensure-dirs:
 	mkdir -p $(PATH-BIN)
-	mkdir -p $(PATH-DOWNLOADS)
 
 $(PATH-OBJECTS)/main.o: $(PATH-SRC)/main.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@

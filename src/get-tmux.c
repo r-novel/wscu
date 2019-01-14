@@ -33,10 +33,13 @@ char* get_home_dir() {
 }
 
 char* get_tmp_dir() {
-	char name[FILENAME_MAX];
+	char* name = (char*) malloc(FILENAME_MAX * sizeof(char));
+	if (name == NULL) {
+		return NULL;
+	}
 	char* h = get_home_dir();
 	if (h) {
-		snprintf(name, sizeof(name), "%s/%s", h, ".wscu_tmp");
+		snprintf(name, FILENAME_MAX * sizeof(char), "%s/%s", h, ".wscu_tmp");
 		return name;
 	}
 	return NULL;
@@ -63,13 +66,11 @@ int get_tmux(const char* url) {
 	CURLcode res;
 	char name[FILENAME_MAX];
 	int ok = create_dir();
-	if (ok) {
-		snprintf(name, sizeof(name), "%s/%s", create_dir(), get_name(url));
+	char* nm = get_tmp_dir();
+	if (ok >= 0) {
+		snprintf(name, sizeof(name), "%s/%s", nm, get_name(url));
 	}
-
-	char cwd[1024];
-    getcwd(cwd, sizeof(cwd));
-    printf("\tWorkdir: %s\n", cwd);
+	free(nm);
 
 	struct tmux out = {name, NULL};
 	curl_global_init(CURL_GLOBAL_DEFAULT);
