@@ -5,10 +5,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <pwd.h>
 #include <curl/curl.h>
+#include "tmp-dir.h"
+
 
 struct tmux {
 	const char* filename;
@@ -16,6 +15,9 @@ struct tmux {
 };
 
 char* get_home_dir();
+char* get_tmp_dir();
+int create_dir();
+
 size_t tmux_fwrite(void* buf, size_t size, size_t nmemb, void* stream);
 char* get_name(const char* url);
 int get_tmux(const char* url);
