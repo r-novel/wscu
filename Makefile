@@ -29,9 +29,13 @@ $(PATH-OBJECTS)/main.o: $(PATH-SRC)/main.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 $(PATH-OBJECTS)/get-tmux.o: $(PATH-SRC)/get-tmux.c
-	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@ 
+	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+
+$(PATH-OBJECTS)/tmp-dir.o: $(PATH-SRC)/tmp-dir.c
+	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 wscu: \
 	$(PATH-OBJECTS)/main.o \
-	$(PATH-OBJECTS)/get-tmux.o
+	$(PATH-OBJECTS)/get-tmux.o \
+	$(PATH-OBJECTS)/tmp-dir.o
 	$(CC) $(CFLAGS) $(WFLAGS) -o $(PATH-BIN)/$@ $+ $(LDFLAGS)
