@@ -16,7 +16,7 @@ char* get_tmp_dir() {
 	}
 	char* h = get_home_dir();
 	if (h) {
-		snprintf(name, FILENAME_MAX * sizeof(char), "%s/%s", h, ".wscu_tmp");
+		snprintf(name, FILENAME_MAX * sizeof(char), "%s/%s", h, ".wscu");
 		return name;
 	}
 	return NULL;
