@@ -9,7 +9,7 @@
 #include <pwd.h>
 
 extern char* get_home_dir();
-extern char* get_tmp_dir();
-extern int create_dir();
+extern char* get_tmp_dir(char*);
+extern int create_dir(char*);
 
 #endif // _GET_TMUX_H_
