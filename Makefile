@@ -16,7 +16,29 @@ PATH-OBJECTS := $(PATH-BIN)
 .PHONY: all clean
 
 default: build
-build: ensure-dirs wscu
+build: project-name ensure-dirs wscu
+
+project-name: 
+	@echo \
+		-e \
+		"\x1B[1;33m \\n" \
+		"WWWWWWWW                           WWWWWWWW   SSSSSSSSSSSSSSS         CCCCCCCCCCCCCUUUUUUUU     UUUUUUUU \\n" \
+		"W::::::W                           W::::::W SS:::::::::::::::S     CCC::::::::::::CU::::::U     U::::::U \\n" \
+		"W::::::W                           W::::::WS:::::SSSSSS::::::S   CC:::::::::::::::CU::::::U     U::::::U \\n" \
+		"W::::::W                           W::::::WS:::::S     SSSSSSS  C:::::CCCCCCCC::::CUU:::::U     U:::::UU \\n" \
+		" W:::::W           WWWWW           W:::::W S:::::S             C:::::C       CCCCCC U:::::U     U:::::U  \\n" \
+		"  W:::::W         W:::::W         W:::::W  S:::::S            C:::::C               U:::::D     D:::::U  \\n" \
+		"   W:::::W       W:::::::W       W:::::W    S::::SSSS         C:::::C               U:::::D     D:::::U  \\n" \
+		"    W:::::W     W:::::::::W     W:::::W      SS::::::SSSSS    C:::::C               U:::::D     D:::::U  \\n" \
+		"     W:::::W   W:::::W:::::W   W:::::W         SSS::::::::SS  C:::::C               U:::::D     D:::::U  \\n" \
+		"      W:::::W W:::::W W:::::W W:::::W             SSSSSS::::S C:::::C               U:::::D     D:::::U  \\n" \
+		"       W:::::W:::::W   W:::::W:::::W                   S:::::SC:::::C               U:::::D     D:::::U  \\n" \
+		"        W:::::::::W     W:::::::::W                    S:::::S C:::::C       CCCCCC U::::::U   U::::::U  \\n" \
+		"         W:::::::W       W:::::::W         SSSSSSS     S:::::S  C:::::CCCCCCCC::::C U:::::::UUU:::::::U  \\n" \
+		"          W:::::W         W:::::W          S::::::SSSSSS:::::S   CC:::::::::::::::C  UU:::::::::::::UU   \\n" \
+		"           W:::W           W:::W           S:::::::::::::::SS      CCC::::::::::::C    UU:::::::::UU     \\n" \
+		"            WWW             WWW             SSSSSSSSSSSSSSS           CCCCCCCCCCCCC      UUUUUUUUU       \\n" \
+		"\033[0m \\n"
 
 clean:
 	rm -rvf \
