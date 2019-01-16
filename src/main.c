@@ -71,12 +71,13 @@ void customize(int argc, char** argv) {
 	char* nm = NULL;
 
 	int c;
-	const char* short_opt = "hmru:";
+	const char* short_opt = "hmrud:";
 	struct option long_opt[] = {
 		{ "help", no_argument, NULL, 'h' },
 		{ "make", required_argument, NULL, 'm' },
 		{ "remove", required_argument, NULL, 'r' },
 		{ "url", required_argument, NULL, 'u' },
+		{ "dir", required_argument, NULL, 'd' },
 		{ NULL, 0, NULL, 0}
 	};
 	while((c = getopt_long(argc, argv, short_opt, long_opt, NULL)) != -1) {
@@ -85,9 +86,10 @@ void customize(int argc, char** argv) {
 				case 0:
 				break;
 
-		    case 'm': nm = optarg; break;
+		    case 'm': fprintf(stdout, "directory %s was created;\n", make_dir(optarg)); return;
 		    case 'r': cleaner(); break;
 		    case 'u': url = optarg; break;
+		    case 'd': nm = optarg; break;
 		    case 'h': usage(argv[0]); return;
 		    case ':': case '?': info(argv[0], 0); return;
 		    default: info(argv[0], c); return;
