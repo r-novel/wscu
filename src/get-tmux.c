@@ -23,21 +23,13 @@ char* get_name(const char* url) {
 	return NULL;
 }
 
-int get_tmux(const char* url) {
+int get_tmux(const char* url, char* outname) {
 	CURL* curl;
 	char* location;
 	long resp_code;
 	CURLcode res;
-	char name[FILENAME_MAX];
-
-	int ok = create_dir();
-	char* nm = get_tmp_dir();
-	if (ok >= 0) {
-		snprintf(name, sizeof(name), "%s/%s", nm, get_name(url));
-	}
-	free(nm);
-
-	struct tmux out = {name, NULL};
+	
+	struct tmux out = {outname, NULL};
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 	
 	curl = curl_easy_init();
