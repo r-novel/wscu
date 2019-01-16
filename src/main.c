@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include "get-tmux.h"
 #include "const.h"
- 
-// const char* url = "https://github.com/tmux/tmux/releases/download/2.8/tmux-2.8.tar.gz";
 
 void tmux(const char* url, char* out) {
 	int res = get_tmux(url, out);
@@ -28,6 +26,7 @@ void usage(char* argv) {
 	fprintf(stdout, "\t-m --make\t\tmake temporary directory for contain source codes;\n");
 	fprintf(stdout, "\t-r --remove\t\tremove temporary directory;\n");
 	fprintf(stdout, "\t-u --url\t\tinput url for downloading utilities;\n");
+	fprintf(stdout, "\t-d --dir\t\ttemporary directory name;\n");
 	fprintf(stdout, "\t-h, --help\t\tprint usage message and exit;\n");
 }
 
