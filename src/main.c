@@ -19,7 +19,31 @@ void tmux(const char* url, char* out) {
 	fprintf(stdout, "[main] function has been finished with curl code: %d\n", res);
 }
 
-void cleaner() {}
+
+// TODO: need optimize that shitible code;
+void cleaner(char* in) {
+	int ok = 1;
+	char* out = get_tmp_dir(in);
+	if (out) {
+		ok = remove(out);
+		if (ok == 0) {
+			fprintf(stdout, "tmp directory removed successfully;\n");
+			return;
+		} else {
+			ok = remove(get_tmp_dir(DEFAULT_DIR_NAME));
+			if (ok == 0) {
+				fprintf(stdout, "tmp directory (using default name) removed successfully;\n");
+				return;
+			} else {
+				fprintf(stderr, "tmp directory remove failed;\n");
+				return;
+			}
+		}
+	}
+
+	fprintf(stderr, "something wrong with got tmp dir;\n");
+	return;
+}
 
 void usage(char* argv) {
 	fprintf(stdout, "Usage: %s [OPTIONS]\n", argv);
@@ -27,7 +51,7 @@ void usage(char* argv) {
 	fprintf(stdout, "\t-r --remove\t\tremove temporary directory;\n");
 	fprintf(stdout, "\t-u --url\t\tinput url for downloading utilities;\n");
 	fprintf(stdout, "\t-d --dir\t\ttemporary directory name;\n");
-	fprintf(stdout, "\t-h, --help\t\tprint usage message and exit;\n");
+	fprintf(stdout, "\t-h, --help\t\tprint usage information;\n");
 }
 
 void info(char* argv, int c) {
@@ -86,7 +110,7 @@ void customize(int argc, char** argv) {
 				break;
 
 		    case 'm': fprintf(stdout, "directory %s was created;\n", make_dir(optarg)); return;
-		    case 'r': cleaner(); break;
+		    case 'r': nm = optarg; cleaner(nm); return;
 		    case 'u': url = optarg; break;
 		    case 'd': nm = optarg; break;
 		    case 'h': usage(argv[0]); return;
