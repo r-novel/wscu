@@ -2,6 +2,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include <dirent.h>
 #include "get-tmux.h"
 #include "const.h"
 
@@ -17,6 +18,65 @@ void tmux(const char* url, char* out) {
 	}
 
 	fprintf(stdout, "[main] function has been finished with curl code: %d\n", res);
+}
+
+
+int remove_dir(char* in) {
+	DIR* dir = opendir(in);
+	size_t in_len = strlen(in);
+	int r = -1;
+	if (d) {
+		struct dirent* p;
+     r = 0;
+
+      while (!r && (p=readdir(d)))
+      {
+          int r2 = -1;
+          char *buf;
+          size_t len;
+
+          /* Skip the names "." and ".." as we don't want to recurse on them. */
+          if (!strcmp(p->d_name, ".") || !strcmp(p->d_name, ".."))
+          {
+             continue;
+          }
+
+          len = path_len + strlen(p->d_name) + 2; 
+          buf = malloc(len);
+
+          if (buf)
+          {
+             struct stat statbuf;
+
+             snprintf(buf, len, "%s/%s", path, p->d_name);
+
+             if (!stat(buf, &statbuf))
+             {
+                if (S_ISDIR(statbuf.st_mode))
+                {
+                   r2 = remove_directory(buf);
+                }
+                else
+                {
+                   r2 = unlink(buf);
+                }
+             }
+
+             free(buf);
+          }
+
+          r = r2;
+      }
+
+      closedir(d);
+   }
+
+   if (!r)
+   {
+      r = rmdir(path);
+   }
+
+   return r;
 }
 
 
