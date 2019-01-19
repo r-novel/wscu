@@ -25,14 +25,14 @@ void tmux(const char* url, char* out) {
 int remove_dir(char* in) {
 	DIR* dir = opendir(in);
 	size_t in_len = strlen(in);
-	int ok = -1;
+	int res = -1;
 	
 	if (dir) {
 		struct dirent* p;
-		ok = 0;
+		res = 0;
 
-		while (!ok && (p = readdir(dir))) {
-			int tmp_ok = -1;
+		while (!res && (p = readdir(dir))) {
+			int tmp_res = -1;
 			char* buf = NULL;
 			size_t len;
 
@@ -48,22 +48,22 @@ int remove_dir(char* in) {
 
 				if (!stat(buf, &statbuf)) {
 					if (S_ISDIR(statbuf.st_mode))
-						tmp_ok = remove_dir(buf);
+						tmp_res = remove_dir(buf);
 					else
-						tmp_ok = unlink(buf);
+						tmp_res = unlink(buf);
 				}
 				free(buf);
 			}
-			ok = tmp_ok;
+			res = tmp_res;
 		}
 
 		closedir(dir);
 	}
 
-	if (!ok)
-		ok = rmdir(in);
+	if (!res)
+		res = rmdir(in);
 
-	return ok;
+	return res;
 }
 
 

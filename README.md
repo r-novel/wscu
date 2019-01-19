@@ -27,19 +27,24 @@ $ make clean
 
 ## Usage
 
-Create tmp dot directory and download tools using default variables:
+Create temp dot directory and download tools using default variables:
 ```
 $ ./bin/wscu
 ```
 
-Make tmp directory:
+Make temp directory:
 ```
 $ ./bin/wscu --make=".wscu_custom_dir"
 ```
 
+Remove temp directory:
+```
+$ ./bin/wscu --remove=".wscu_custom_dir"
+```
+
 Run utility with custom options:
 ```
-$ ./bin/wscu --dir=".wscu" --url="https://anyhost.com/require_tool.tar.gz"
+$ ./bin/wscu --dir=".wscu" --url="scheme://anyhost/require_tool.tar.gz"
 ```
 
 Use help to print usage information:
