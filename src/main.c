@@ -3,6 +3,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <sys/stat.h>
 #include "get-tmux.h"
 #include "const.h"
 
@@ -24,73 +25,59 @@ void tmux(const char* url, char* out) {
 int remove_dir(char* in) {
 	DIR* dir = opendir(in);
 	size_t in_len = strlen(in);
-	int r = -1;
-	if (d) {
+	int ok = -1;
+	
+	if (dir) {
 		struct dirent* p;
-     r = 0;
+		ok = 0;
 
-      while (!r && (p=readdir(d)))
-      {
-          int r2 = -1;
-          char *buf;
-          size_t len;
+		while (!ok && (p = readdir(dir))) {
+			int tmp_ok = -1;
+			char* buf = NULL;
+			size_t len;
 
-          /* Skip the names "." and ".." as we don't want to recurse on them. */
-          if (!strcmp(p->d_name, ".") || !strcmp(p->d_name, ".."))
-          {
-             continue;
-          }
+			if (!strcmp(p->d_name, ".") || !strcmp(p->d_name, ".."))
+				continue;
 
-          len = path_len + strlen(p->d_name) + 2; 
-          buf = malloc(len);
+			len = in_len + strlen(p->d_name) + 2; 
+			buf = (char*)malloc(len);
 
-          if (buf)
-          {
-             struct stat statbuf;
+			if (buf) {
+				struct stat statbuf;
+				snprintf(buf, len, "%s/%s", in, p->d_name);
 
-             snprintf(buf, len, "%s/%s", path, p->d_name);
+				if (!stat(buf, &statbuf)) {
+					if (S_ISDIR(statbuf.st_mode))
+						tmp_ok = remove_dir(buf);
+					else
+						tmp_ok = unlink(buf);
+				}
+				free(buf);
+			}
+			ok = tmp_ok;
+		}
 
-             if (!stat(buf, &statbuf))
-             {
-                if (S_ISDIR(statbuf.st_mode))
-                {
-                   r2 = remove_directory(buf);
-                }
-                else
-                {
-                   r2 = unlink(buf);
-                }
-             }
+		closedir(dir);
+	}
 
-             free(buf);
-          }
+	if (!ok)
+		ok = rmdir(in);
 
-          r = r2;
-      }
-
-      closedir(d);
-   }
-
-   if (!r)
-   {
-      r = rmdir(path);
-   }
-
-   return r;
+	return ok;
 }
 
 
-// TODO: need optimize that shitible code;
+//TODO: need optimize that shitible code;
 void cleaner(char* in) {
 	int ok = 1;
 	char* out = get_tmp_dir(in);
 	if (out) {
-		ok = remove(out);
+		ok = remove_dir(out);
 		if (ok == 0) {
 			fprintf(stdout, "tmp directory removed successfully;\n");
 			return;
 		} else {
-			ok = remove(get_tmp_dir(DEFAULT_DIR_NAME));
+			ok = remove_dir(get_tmp_dir(DEFAULT_DIR_NAME));
 			if (ok == 0) {
 				fprintf(stdout, "tmp directory (using default name) removed successfully;\n");
 				return;
