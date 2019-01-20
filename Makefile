@@ -53,11 +53,15 @@ $(PATH-OBJECTS)/main.o: $(PATH-SRC)/main.c
 $(PATH-OBJECTS)/get-tmux.o: $(PATH-SRC)/get-tmux.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
-$(PATH-OBJECTS)/tmp-dir.o: $(PATH-SRC)/tmp-dir.c
+$(PATH-OBJECTS)/dir.o: $(PATH-SRC)/dir.c
+	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+
+$(PATH-OBJECTS)/cli.o: $(PATH-SRC)/cli.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 wscu: \
 	$(PATH-OBJECTS)/main.o \
 	$(PATH-OBJECTS)/get-tmux.o \
-	$(PATH-OBJECTS)/tmp-dir.o
+	$(PATH-OBJECTS)/dir.o \
+	$(PATH-OBJECTS)/cli.o
 	$(CC) $(CFLAGS) $(WFLAGS) -o $(PATH-BIN)/$@ $+ $(LDFLAGS)
