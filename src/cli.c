@@ -1,4 +1,5 @@
 #include "cli.h"
+#include "log.h"
 
 void tmux(const char* url, char* out) {
 	int res = get_tmux(url, out);
@@ -11,7 +12,7 @@ void tmux(const char* url, char* out) {
 		}
 	}
 
-	fprintf(stdout, "[main] function has been finished with curl code: %d\n", res);
+	log(info, "function has been finished with curl code: %d", res);
 }
 
 //TODO: need optimize that shitible code;
@@ -48,7 +49,7 @@ void usage(char* argv) {
 	fprintf(stdout, "\t-h, --help\t\tprint usage information;\n");
 }
 
-void info(char* argv, int c) {
+void err_msg(char* argv, int c) {
 	if(c) {
 	fprintf(stderr, "%s: invalid option --%c\n", argv, c);
 	}
@@ -91,8 +92,8 @@ void customize(int argc, char** argv) {
 		    case 'u': url = optarg; break;
 		    case 'd': nm = optarg; break;
 		    case 'h': usage(argv[0]); return;
-		    case ':': case '?': info(argv[0], 0); return;
-		    default: info(argv[0], c); return;
+		    case ':': case '?': err_msg(argv[0], 0); return;
+		    default: err_msg(argv[0], c); return;
 	    };
 	  };
 

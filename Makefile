@@ -48,16 +48,16 @@ ensure-dirs:
 	mkdir -p $(PATH-BIN)
 
 $(PATH-OBJECTS)/main.o: $(PATH-SRC)/main.c
-	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 $(PATH-OBJECTS)/get-tmux.o: $(PATH-SRC)/get-tmux.c
-	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 $(PATH-OBJECTS)/dir.o: $(PATH-SRC)/dir.c
-	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 $(PATH-OBJECTS)/cli.o: $(PATH-SRC)/cli.c
-	$(CC) $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 wscu: \
 	$(PATH-OBJECTS)/main.o \
