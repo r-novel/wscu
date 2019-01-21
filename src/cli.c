@@ -15,6 +15,20 @@ void tmux(const char* url, char* out) {
 	log(info, "function has been finished with curl code: %d", res);
 }
 
+void vim(const char* url, char* out) {
+	int res = get_vim(url, out);
+	if (res < 0) {
+		switch (res) {
+			case -1: log(error, " error with open output file; error code is: %d\n", res); break;
+			case -2: log(error, " error with redirect; error code is: %d\n", res); break;
+			case -3: log(error, " error with curl init; error code is: %d\n", res); break;
+			default: break;
+		}
+	}
+
+	log(info, "function has been finished with curl code: %d", res);
+}
+
 //TODO: need optimize that shitible code;
 void cleaner(char* in) {
 	int ok = 1;
@@ -58,13 +72,16 @@ void err_msg(char* argv, int c) {
 
 
 void defaultize() {
-	char name[FILENAME_MAX];
+	char name_tmux[FILENAME_MAX];
+	char name_vim[FILENAME_MAX];
 	char* dir = mk_dir(NULL);
 	if (dir) {
-		snprintf(name, sizeof(name), "%s/%s", dir, get_name(DEFAULT_TMUX_URL));
+		snprintf(name_tmux, sizeof(name_tmux), "%s/%s", dir, get_tmux_name(DEFAULT_TMUX_URL));
+		snprintf(name_vim, sizeof(name_vim), "%s/%s", dir, get_vim_name(DEFAULT_VIM_URL));
 	}
 	free(dir);
-	tmux(DEFAULT_TMUX_URL, name);
+	tmux(DEFAULT_TMUX_URL, name_tmux);
+	vim(DEFAULT_VIM_URL, name_vim);
 }
 
 void customize(int argc, char** argv) {
@@ -97,11 +114,14 @@ void customize(int argc, char** argv) {
 	    };
 	  };
 
-	char name[FILENAME_MAX];
+	char name_tmux[FILENAME_MAX];
+	char name_vim[FILENAME_MAX];
 	char* dir = mk_dir(nm);
 	if (dir) {
-		snprintf(name, sizeof(name), "%s/%s", dir, get_name(url));
+		snprintf(name_tmux, sizeof(name_tmux), "%s/%s", dir, get_tmux_name(url));
+		snprintf(name_vim, sizeof(name_vim), "%s/%s", dir, get_vim_name(DEFAULT_VIM_URL));
 	}
 	free(dir);
-	tmux(url, name);
+	tmux(url, name_tmux);
+	vim(DEFAULT_VIM_URL, name_vim);
 }

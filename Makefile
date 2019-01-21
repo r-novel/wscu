@@ -53,6 +53,9 @@ $(PATH-OBJECTS)/main.o: $(PATH-SRC)/main.c
 $(PATH-OBJECTS)/get-tmux.o: $(PATH-SRC)/get-tmux.c
 	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
+$(PATH-OBJECTS)/get-vim.o: $(PATH-SRC)/get-vim.c
+	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+
 $(PATH-OBJECTS)/dir.o: $(PATH-SRC)/dir.c
 	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
@@ -62,6 +65,7 @@ $(PATH-OBJECTS)/cli.o: $(PATH-SRC)/cli.c
 wscu: \
 	$(PATH-OBJECTS)/main.o \
 	$(PATH-OBJECTS)/get-tmux.o \
+	$(PATH-OBJECTS)/get-vim.o \
 	$(PATH-OBJECTS)/dir.o \
 	$(PATH-OBJECTS)/cli.o
 	$(CC) $(CFLAGS) $(WFLAGS) -o $(PATH-BIN)/$@ $+ $(LDFLAGS)

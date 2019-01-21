@@ -8,6 +8,7 @@
 
 #include "const.h"
 #include "get-tmux.h"
+#include "get-vim.h"
 #include "dir.h"
 
 void tmux(const char*, char*);

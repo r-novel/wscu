@@ -16,7 +16,7 @@ struct tmux {
 };
 
 size_t tmux_fwrite(void*, size_t, size_t, void*);
-char* get_name(const char*);
+char* get_tmux_name(const char*);
 int get_tmux(const char*, char*);
 
 #endif // _GET_TMUX_H_
