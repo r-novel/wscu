@@ -1,4 +1,5 @@
 #include "cli.h"
+#include "log.h"
 
 void tmux(const char* url, char* out) {
 	int res = get_tmux(url, out);
@@ -11,7 +12,9 @@ void tmux(const char* url, char* out) {
 		}
 	}
 
-	fprintf(stdout, "[main] function has been finished with curl code: %d\n", res);
+	printf("\n");
+	INFO("function has been finished with curl code");
+	// fprintf(stdout, "[main] function has been finished with curl code: %d\n", res);
 }
 
 //TODO: need optimize that shitible code;
