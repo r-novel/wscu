@@ -16,7 +16,7 @@ char* get_name(const char* url) {
 		if (c)
 			return c + 1;
 		else {
-			fprintf(stderr, "[get-name] error with get token;\n");
+			log(error, " error with get token;\n");
 			return NULL;
 		}
 	}
@@ -37,11 +37,11 @@ int get_tmux(const char* url, char* outname) {
 		curl_easy_setopt(curl, CURLOPT_URL, url);
 		res = curl_easy_perform(curl);
 		if (res != CURLE_OK)
-			fprintf(stderr, "[get-tmux] error with curl perform; raw error: %s\n", curl_easy_strerror(res));
+			log(error, " error with curl perform; raw error: %s\n", curl_easy_strerror(res));
 		else {
 			res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
 			if((res == CURLE_OK) && ((resp_code / 100) != 3)) {
-				fprintf(stderr, "not a redirect;\n");
+				log(error, "not a redirect;\n");
 				return -2;
 			} else {
 				res = curl_easy_getinfo(curl, CURLINFO_REDIRECT_URL, &location);

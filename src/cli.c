@@ -5,9 +5,9 @@ void tmux(const char* url, char* out) {
 	int res = get_tmux(url, out);
 	if (res < 0) {
 		switch (res) {
-			case -1: fprintf(stderr, "[main] error with open output file; error code is: %d\n", res); break;
-			case -2: fprintf(stderr, "[main] error with redirect; error code is: %d\n", res); break;
-			case -3: fprintf(stderr, "[main] error with curl init; error code is: %d\n", res); break;
+			case -1: log(error, " error with open output file; error code is: %d\n", res); break;
+			case -2: log(error, " error with redirect; error code is: %d\n", res); break;
+			case -3: log(error, " error with curl init; error code is: %d\n", res); break;
 			default: break;
 		}
 	}
@@ -22,21 +22,21 @@ void cleaner(char* in) {
 	if (out) {
 		ok = rm_dir(out);
 		if (ok == 0) {
-			fprintf(stdout, "tmp directory removed successfully;\n");
+			log(info, "tmp directory removed successfully;\n");
 			return;
 		} else {
 			ok = rm_dir(temp(DEFAULT_DIR_NAME));
 			if (ok == 0) {
-				fprintf(stdout, "tmp directory (using default name) removed successfully;\n");
+				log(warning, "tmp directory (using default) removed successfully;\n");
 				return;
 			} else {
-				fprintf(stderr, "tmp directory remove failed;\n");
+				log(error, "tmp directory remove failed;\n");
 				return;
 			}
 		}
 	}
 
-	fprintf(stderr, "something wrong with got tmp dir;\n");
+	log(error, "something wrong with got tmp dir;\n");
 	return;
 }
 
@@ -87,7 +87,7 @@ void customize(int argc, char** argv) {
 				case 0:
 				break;
 
-		    case 'm': fprintf(stdout, "directory %s was created;\n", mk_dir(optarg)); return;
+		    case 'm': log(info, "directory %s was created;\n", mk_dir(optarg)); return;
 		    case 'r': nm = optarg; cleaner(nm); return;
 		    case 'u': url = optarg; break;
 		    case 'd': nm = optarg; break;

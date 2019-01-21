@@ -14,7 +14,7 @@ void tmux(const char*, char*);
 void cleaner(char*);
 
 void usage(char*);
-void info(char*, int);
+void err_msg(char*, int);
 
 void defaultize();
 void customize(int, char**);

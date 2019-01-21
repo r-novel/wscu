@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <curl/curl.h>
 #include "dir.h"
+#include "log.h"
 
 
 struct tmux {
