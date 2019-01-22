@@ -5,7 +5,7 @@
 
 #define GREEN		"[1;32m"
 #define MAGENTA	"[1;35m"
-#define ORANGE	"[38:2:255:165:0m"
+#define ORANGE	"[01;38;05;214m"
 #define CYAN		"[1;36m"
 #define RED 		"[1;31m"
 #define BLUE 		"[1;94m"
