@@ -1,7 +1,7 @@
-#include "get-vim.h"
+#include "dl.h"
 
-size_t vim_fwrite(void *buf, size_t size, size_t nmemb, void* stream) {
-	struct vim* out = (struct vim*)stream;
+size_t tool_fwrite(void *buf, size_t size, size_t nmemb, void* stream) {
+	struct tool_t* out = (struct tool_t*)stream;
 	if(out && !out->stream) {
 		out->stream = fopen(out->filename, "w");
 		if(!out->stream)
@@ -10,7 +10,7 @@ size_t vim_fwrite(void *buf, size_t size, size_t nmemb, void* stream) {
 	return fwrite(buf, size, nmemb, out->stream);
 }
 
-char* get_vim_name(const char* url) {
+char* tool_name(const char* url) {
 	if (url) {
 		char* c = strrchr(url, '/');
 		if (c)
@@ -23,13 +23,13 @@ char* get_vim_name(const char* url) {
 	return NULL;
 }
 
-int get_vim(const char* url, char* outname) {
+int tool(const char* url, char* outname) {
 	CURL* curl;
 	char* location;
 	long resp_code;
 	CURLcode res;
 	
-	struct vim out = {outname, NULL};
+	struct tool_t out = {outname, NULL};
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 	
 	curl = curl_easy_init();
@@ -47,7 +47,7 @@ int get_vim(const char* url, char* outname) {
 				res = curl_easy_getinfo(curl, CURLINFO_REDIRECT_URL, &location);
 				if((res == CURLE_OK) && location) {
 					curl_easy_setopt(curl, CURLOPT_URL, location);
-					curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, vim_fwrite);
+					curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, tool_fwrite);
 					curl_easy_setopt(curl, CURLOPT_WRITEDATA, &out);
 					curl_easy_perform(curl);
         }
@@ -63,4 +63,3 @@ int get_vim(const char* url, char* outname) {
 	}
 	return -3;
 }
-

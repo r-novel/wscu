@@ -7,11 +7,10 @@
 #include <getopt.h>
 
 #include "const.h"
-#include "get-tmux.h"
-#include "get-vim.h"
+#include "dl.h"
 #include "dir.h"
 
-void tmux(const char*, char*);
+void download(const char*, char*);
 void cleaner(char*);
 
 void usage(char*);

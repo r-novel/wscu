@@ -1,22 +1,8 @@
 #include "cli.h"
 #include "log.h"
 
-void tmux(const char* url, char* out) {
-	int res = get_tmux(url, out);
-	if (res < 0) {
-		switch (res) {
-			case -1: log(error, " error with open output file; error code is: %d\n", res); break;
-			case -2: log(error, " error with redirect; error code is: %d\n", res); break;
-			case -3: log(error, " error with curl init; error code is: %d\n", res); break;
-			default: break;
-		}
-	}
-
-	log(info, "function has been finished with curl code: %d", res);
-}
-
-void vim(const char* url, char* out) {
-	int res = get_vim(url, out);
+void download(const char* url, char* out) {
+	int res = tool(url, out);
 	if (res < 0) {
 		switch (res) {
 			case -1: log(error, " error with open output file; error code is: %d\n", res); break;
@@ -72,41 +58,34 @@ void err_msg(char* argv, int c) {
 
 
 void defaultize() {
-	char name_tmux[FILENAME_MAX];
-	char name_vim[FILENAME_MAX];
+	char tmux[FILENAME_MAX];
+	char vim[FILENAME_MAX];
 	char* dir = mk_dir(NULL);
 	if (dir) {
-		snprintf(name_tmux, sizeof(name_tmux), "%s/%s", dir, get_tmux_name(DEFAULT_TMUX_URL));
-		snprintf(name_vim, sizeof(name_vim), "%s/%s", dir, get_vim_name(DEFAULT_VIM_URL));
+		snprintf(tmux, sizeof(tmux), "%s/%s", dir, tool_name(DEFAULT_TMUX_URL));
+		snprintf(vim, sizeof(vim), "%s/%s", dir, tool_name(DEFAULT_VIM_URL));
 	}
 	free(dir);
-	tmux(DEFAULT_TMUX_URL, name_tmux);
-	vim(DEFAULT_VIM_URL, name_vim);
+	download(DEFAULT_TMUX_URL, tmux);
+	download(DEFAULT_VIM_URL, vim);
 }
 
 void customize(int argc, char** argv) {
-	char* url = NULL;
 	char* nm = NULL;
-
 	int c;
-	const char* short_opt = "hmrud:";
+	const char* short_opt = "hmrd:";
 	struct option long_opt[] = {
 		{ "help", no_argument, NULL, 'h' },
 		{ "make", required_argument, NULL, 'm' },
 		{ "remove", required_argument, NULL, 'r' },
-		{ "url", required_argument, NULL, 'u' },
 		{ "dir", required_argument, NULL, 'd' },
 		{ NULL, 0, NULL, 0}
 	};
 	while((c = getopt_long(argc, argv, short_opt, long_opt, NULL)) != -1) {
 	    switch(c) {
-				case -1:
-				case 0:
-				break;
-
+				case -1: case 0: break;
 		    case 'm': log(info, "directory %s was created;\n", mk_dir(optarg)); return;
 		    case 'r': nm = optarg; cleaner(nm); return;
-		    case 'u': url = optarg; break;
 		    case 'd': nm = optarg; break;
 		    case 'h': usage(argv[0]); return;
 		    case ':': case '?': err_msg(argv[0], 0); return;
@@ -114,14 +93,5 @@ void customize(int argc, char** argv) {
 	    };
 	  };
 
-	char name_tmux[FILENAME_MAX];
-	char name_vim[FILENAME_MAX];
-	char* dir = mk_dir(nm);
-	if (dir) {
-		snprintf(name_tmux, sizeof(name_tmux), "%s/%s", dir, get_tmux_name(url));
-		snprintf(name_vim, sizeof(name_vim), "%s/%s", dir, get_vim_name(DEFAULT_VIM_URL));
-	}
-	free(dir);
-	tmux(url, name_tmux);
-	vim(DEFAULT_VIM_URL, name_vim);
+	defaultize();
 }
