@@ -44,7 +44,7 @@ $ ./bin/wscu --remove=".wscu_custom_dir"
 
 Run utility with custom options:
 ```
-$ ./bin/wscu --dir=".wscu" --url="scheme://anyhost/require_tool.tar.gz"
+$ ./bin/wscu --dir=".wscu"
 ```
 
 Use help to print usage information:
