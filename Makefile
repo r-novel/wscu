@@ -1,15 +1,16 @@
 SHELL := /bin/bash
 
-CC := gcc
-
-CFLAGS := -O1 -std=c99 -pipe
-WFLAGS := -Wall -Werror
-LDFLAGS := -lm -lncurses -lcurl
-
 PATH-PROJECT := $(shell pwd)
 PATH-BIN := $(PATH-PROJECT)/bin
 PATH-SRC := $(PATH-PROJECT)/src
+PATH-INCLUDE := $(PATH-PROJECT)/include
 PATH-OBJECTS := $(PATH-BIN)
+
+CC := gcc
+
+CFLAGS := -O1 -std=c99 -pipe -I$(PATH-INCLUDE)
+WFLAGS := -Wall -Werror
+LDFLAGS := -lm -lncurses -lcurl
 
 .DEFAULT: default
 .PHONY: all default build
