@@ -1,5 +1,4 @@
 #include "cli.h"
-#include "log.h"
 
 void download(const char* url, char* out) {
 	int res = tool(url, out);

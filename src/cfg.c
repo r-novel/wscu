@@ -2,39 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <yaml.h>
-#include "log.h"
-
-struct cfg_tool {
-    char* name;
-    char* url;
-};
-
-enum state_t {
-    START,
-    SECTION,
-    LIST,
-    VALUES,
-    KEY,
-    VALUE,
-    STOP,
-    ERROR,
-};
-
-struct state {
-    enum state_t state;
-    int  accepted;
-    char* key;
-};
-
-void cfg_tool_free(struct cfg_tool* in) {
-  if (in) {
-    free(in->name);
-    free(in->url);
-  } else {
-    fprintf(stderr, "error with free config tool struct \n");
-  }
-
-}
+#include "cfg.h"
 
 int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
     st->accepted = 0;
@@ -43,10 +11,10 @@ int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
         switch (event->type) {
           case YAML_MAPPING_START_EVENT: st->state = SECTION; break;
           case YAML_SCALAR_EVENT:
-            // log(warning, "Ignoring unexpected scalar: %s\n", event->data.scalar.value);
+            log(warning, "Ignoring unexpected scalar: %s\n", event->data.scalar.value);
           break;
           case YAML_SEQUENCE_START_EVENT:
-            // log(warning, "Unexpected sequence.\n");
+            log(warning, "Unexpected sequence.\n");
             st->state = ERROR;
           break;
           case YAML_STREAM_END_EVENT: st->state = STOP; break;
@@ -59,12 +27,12 @@ int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
             if (strcmp((char*)event->data.scalar.value, "tools") == 0) {
               st->state = LIST;
             }   else {
-              fprintf(stderr, "Unexpected scalar: %s\n", (char*)event->data.scalar.value);
+              log(warning, "Unexpected scalar: %s\n", (char*)event->data.scalar.value);
               st->state = ERROR;
             }
           break;
           default:
-            fprintf(stderr, "Unexpected event while getting scalar: %d\n", event->type);
+            log(warning, "Unexpected event while getting scalar: %d\n", event->type);
             st->state = ERROR;
           break;
         }
@@ -73,7 +41,7 @@ int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
         switch (event->type) {
           case YAML_SEQUENCE_START_EVENT: st->state = VALUES; break;
           default:
-              fprintf(stderr, "Unexpected event while getting sequence: %d\n", event->type);
+              log(warning, "Unexpected event while getting sequence: %d\n", event->type);
               st->state = ERROR;
           break;
         }
@@ -91,7 +59,7 @@ int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
             st->state = START; 
           break;
           default:
-            // log(warning, "Unexpected event while getting mapped values: %d\n", event->type);  
+            log(warning, "Unexpected event while getting mapped values: %d\n", event->type);  
             st->state = ERROR;
           break;
         }
@@ -107,7 +75,7 @@ int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
             st->state = VALUES;
           break;
           default:
-            // log(warning, "Unexpected event while getting key: %d\n", event->type);
+            log(warning, "Unexpected event while getting key: %d\n", event->type);
             st->state = ERROR;
           break;
         }
@@ -120,14 +88,13 @@ int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
             } else if (strcmp(st->key, "url") == 0) {
               t->url = strdup((char*)event->data.scalar.value);
             } else {
-              fprintf(stderr, "Ignoring unknown key: %s\n", st->key);
+              log(warning, "Ignoring unknown key: %s\n", st->key);
             }
             free(st->key);
             st->state = KEY;
           break;
           default:
-            fprintf(stderr, "Unexpected event while getting value: %d\n",
-                    event->type);
+            log(warning, "Unexpected event while getting value: %d\n",event->type);
             st->state = ERROR;
           break;
         }
@@ -144,20 +111,20 @@ int cfg_tool(struct cfg_tool tools[]) {
     struct state st = { .state = START, .accepted = 0 };
    
     if(!yaml_parser_initialize(&parser)) 
-      fprintf(stderr, "error with yaml parse init \n");
+      log(error, "error with yaml parse init;\n");
 
     yaml_parser_set_input_file(&parser, stdin);
 
     int i = 0;
     do {
         if (!yaml_parser_parse(&parser, &event)) {
-            fprintf(stderr, "error with yaml parser \n");
+            log(error, "error with yaml parser;\n");
             yaml_parser_delete(&parser);
             return 0;
         }
 
         if (!perform(&st, &event, &tools[i])) {
-            fprintf(stderr, "error with perform yaml event;\n");
+            log(error, "error with perform yaml event;\n");
             yaml_parser_delete(&parser);
             return 0;
         }
@@ -170,13 +137,24 @@ int cfg_tool(struct cfg_tool tools[]) {
     return 1;
 }
 
+void cfg_tool_free(struct cfg_tool* in) {
+  if (in) {
+    free(in->name);
+    free(in->url);
+  } else {
+    log(error, "error with free config tool struct \n");
+  }
+
+}
+
 void test(void) {
   struct cfg_tool res[2];
   int ok = cfg_tool(res);
   if (ok) {
     for (int i = 0; i < 2; ++i) {
-      printf("Tool struct: res[%d]{ name: %s, url: %s }\n", i, res[i].name, res[i].url);
+      log(trace, "Tool struct: res[%d]{ name: %s, url: %s }\n", i, res[i].name, res[i].url);
+      cfg_tool_free(&res[i]);
     }
   } else
-    fprintf(stderr, "error with get tools from config;\n");
+    log(error, "error with get tools from config;\n");
 }
