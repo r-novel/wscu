@@ -10,7 +10,7 @@ CC := gcc
 
 CFLAGS := -O1 -std=c99 -pipe -I$(PATH-INCLUDE)
 WFLAGS := -Wall -Werror
-LDFLAGS := -lm -lncurses -lcurl
+LDFLAGS := -lncurses -lcurl -lyaml
 
 .DEFAULT: default
 .PHONY: all default build
@@ -54,6 +54,9 @@ $(PATH-OBJECTS)/main.o: $(PATH-SRC)/main.c
 $(PATH-OBJECTS)/dl.o: $(PATH-SRC)/dl.c
 	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
+$(PATH-OBJECTS)/cfg.o: $(PATH-SRC)/cfg.c
+	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+
 $(PATH-OBJECTS)/dir.o: $(PATH-SRC)/dir.c
 	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
@@ -63,6 +66,7 @@ $(PATH-OBJECTS)/cli.o: $(PATH-SRC)/cli.c
 wscu: \
 	$(PATH-OBJECTS)/main.o \
 	$(PATH-OBJECTS)/dl.o \
+	$(PATH-OBJECTS)/cfg.o \
 	$(PATH-OBJECTS)/dir.o \
 	$(PATH-OBJECTS)/cli.o
 	$(CC) $(CFLAGS) $(WFLAGS) -o $(PATH-BIN)/$@ $+ $(LDFLAGS)

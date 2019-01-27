@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <yaml.h>
-// #include "../include/log.h"
+#include "log.h"
 
 struct cfg_tool {
     char* name;
@@ -28,11 +28,8 @@ struct state {
 
 void cfg_tool_free(struct cfg_tool* in) {
   if (in) {
-    for (int i = 0; i < 2; ++i) {
-      free(in->name);
-      free(in->url);
-    }
-    free(in);
+    free(in->name);
+    free(in->url);
   } else {
     fprintf(stderr, "error with free config tool struct \n");
   }
@@ -84,7 +81,7 @@ int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
       case VALUES:
         switch (event->type) {
           case YAML_MAPPING_START_EVENT:
-            memset(t, 0, sizeof(t));
+            memset(t, 0, sizeof(*t));
             st->state = KEY;
           break;
           case YAML_SEQUENCE_END_EVENT: 
@@ -141,14 +138,11 @@ int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
   return (st->state == ERROR ? 0 : 1);
 }
 
-int tool(struct cfg_tool tools[]) {
+int cfg_tool(struct cfg_tool tools[]) {
     yaml_parser_t parser;
     yaml_event_t event;
     struct state st = { .state = START, .accepted = 0 };
-    //TODO: create reallocate; 
-    // struct cfg_tool data[2];
-    // struct cfg_tool* out;
-
+   
     if(!yaml_parser_initialize(&parser)) 
       fprintf(stderr, "error with yaml parse init \n");
 
@@ -167,38 +161,22 @@ int tool(struct cfg_tool tools[]) {
             yaml_parser_delete(&parser);
             return 0;
         }
-        if (st.accepted) {
-          // data = realloc(data, i * sizeof(data));
-          // printf("Size %d\n", sizeof(data)/sizeof(*data));
-          // printf("data[%d]={name=%s, url=%s}\n", i, data[i].name, data[i].url);
+        if (st.accepted)
           i++;
-        }
         yaml_event_delete(&event);
     } while (st.state != STOP);
-    // out = data;
-    yaml_parser_delete(&parser);
-    // printf("~~~~~~>res\n");
-    // printf("DATA %d\n", sizeof(data)/sizeof(*data));
 
-    // for (int j = 0; j < sizeof(data)/sizeof(*data); ++j) {
-    //   printf("data[%d]{name: %s url: %s}\n", j, data[j].name, data[j].url);
-    // }
-    
+    yaml_parser_delete(&parser);
     return 1;
 }
 
-int main(void) {
+void test(void) {
   struct cfg_tool res[2];
-  int ok = tool(res);
+  int ok = cfg_tool(res);
   if (ok) {
     for (int i = 0; i < 2; ++i) {
       printf("Tool struct: res[%d]{ name: %s, url: %s }\n", i, res[i].name, res[i].url);
-      // cfg_tool_free(res + i);
-
     }
-  } else {
+  } else
     fprintf(stderr, "error with get tools from config;\n");
-  }
-
-  // cfg_tool_free(res);
 }
