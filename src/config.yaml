@@ -1,0 +1,5 @@
+tools:
+  - name: tmux
+    url: https://github.com/tmux/tmux/releases/download/2.8/tmux-2.8.tar.gz
+  - name: vim
+    url: https://github.com/vim/vim/archive/v8.1.0788.tar.gz
