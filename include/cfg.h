@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <yaml.h>
-#include "log.h"
 
 struct cfg_tool {
     char* name;

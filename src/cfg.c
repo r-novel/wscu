@@ -1,8 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <yaml.h>
 #include "cfg.h"
+#include "log.h"
 
 int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
     st->accepted = 0;

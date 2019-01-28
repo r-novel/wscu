@@ -6,9 +6,9 @@
 #include <unistd.h>
 #include <getopt.h>
 #include "const.h"
+#include "cfg.h"
 #include "dl.h"
 #include "dir.h"
-
 
 void download(const char*, char*);
 void cleaner(char*);

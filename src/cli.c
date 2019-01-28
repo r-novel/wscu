@@ -43,7 +43,6 @@ void usage(char* argv) {
 	fprintf(stdout, "Usage: %s [OPTIONS]\n", argv);
 	fprintf(stdout, "\t-m --make\t\tmake temporary directory for contain source codes;\n");
 	fprintf(stdout, "\t-r --remove\t\tremove temporary directory;\n");
-	fprintf(stdout, "\t-u --url\t\tinput url for downloading utilities;\n");
 	fprintf(stdout, "\t-d --dir\t\ttemporary directory name;\n");
 	fprintf(stdout, "\t-h, --help\t\tprint usage information;\n");
 }
@@ -72,10 +71,12 @@ void defaultize() {
 void customize(int argc, char** argv) {
 	char* nm = NULL;
 	int c;
-	const char* short_opt = "hmrd:";
+	const char* short_opt = "hmrdc:";
 	struct option long_opt[] = {
 		{ "help", no_argument, NULL, 'h' },
 		{ "make", required_argument, NULL, 'm' },
+		{	"config", required_argument, NULL, 'c' },
+		{ "configure", no_argument, NULL, 1 },
 		{ "remove", required_argument, NULL, 'r' },
 		{ "dir", required_argument, NULL, 'd' },
 		{ NULL, 0, NULL, 0}
@@ -85,9 +86,11 @@ void customize(int argc, char** argv) {
 				case -1: case 0: break;
 		    case 'm': log(info, "directory %s was created;\n", mk_dir(optarg)); return;
 		    case 'r': nm = optarg; cleaner(nm); return;
+		    case 'c': 
 		    case 'd': nm = optarg; break;
 		    case 'h': usage(argv[0]); return;
 		    case ':': case '?': err_msg(argv[0], 0); return;
+		    case 1: 
 		    default: err_msg(argv[0], c); return;
 	    };
 	  };

@@ -1,5 +1,5 @@
-#ifndef _DOWNLOADER_H_
-#define _DOWNLOADER_H_
+#ifndef _DL_H_
+#define _DL_H_
 
 #include <stdio.h>
 #include <string.h>
