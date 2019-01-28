@@ -54,7 +54,11 @@ void err_msg(char* argv, int c) {
 	fprintf(stderr, "Try `%s --help' for more information.\n", argv);
 }
 
-
+/* 
+TODO rework or delete that function;
+What do with struct cfg_tool? However, field name need to create humanize configuration file;
+Maybe field name will be delete;
+*/
 void defaultize() {
 	char tmux[FILENAME_MAX];
 	char vim[FILENAME_MAX];
@@ -68,9 +72,14 @@ void defaultize() {
 	download(DEFAULT_VIM_URL, vim);
 }
 
+void finalize(char* url) {
+
+}
+
 void customize(int argc, char** argv) {
 	char* nm = NULL;
 	char* fname = NULL;
+	char* dir = NULL;
 	struct cfg_tool tool[2];
 	int c;
 	const char* short_opt = "hmrdc:";
@@ -86,9 +95,9 @@ void customize(int argc, char** argv) {
 	while((c = getopt_long(argc, argv, short_opt, long_opt, NULL)) != -1) {
 	    switch(c) {
 				case -1: case 0: break;
-		    case 'm': log(info, "directory %s was created;\n", mk_dir(optarg)); return;
+		    case 'm': log(info, "directory %s was created;\n", dir = mk_dir(optarg)); break;
 		    case 'r': nm = optarg; cleaner(nm); return;
-		    case 'c': fname = optarg; 
+		    case 'c': fname = optarg; cfg_tool(fname, tool); break;
 		    case 'd': nm = optarg; break;
 		    case 'h': usage(argv[0]); return;
 		    case ':': case '?': err_msg(argv[0], 0); return;
@@ -97,5 +106,18 @@ void customize(int argc, char** argv) {
 	    };
 	  };
 
-	defaultize();
+	char name[FILENAME_MAX];
+	
+	if (dir)
+		log(info, "dot directory have been created;");	
+	for (int i = 0; i < 2; ++i) {
+		snprintf(name, sizeof(name), "%s/%s", dir, tool_name(tool[i].url));
+		download(tool[i].url, name);
+	}
+
+	for(int i = 0; i < 2; ++i) {
+		cfg_tool_free(&tool[i]);
+	}
+	free(dir);
+	log(info, "download successfully;");
 }
