@@ -42,6 +42,8 @@ void cleaner(char* in) {
 void usage(char* argv) {
 	fprintf(stdout, "Usage: %s [OPTIONS]\n", argv);
 	fprintf(stdout, "\t-m --make\t\tmake temporary directory for contain source codes;\n");
+	fprintf(stdout, "\t-c --config\t\tconfig file for download tools;\n");
+	fprintf(stdout, "\t--configure\t\toption for generate work config file;\n");
 	fprintf(stdout, "\t-r --remove\t\tremove temporary directory;\n");
 	fprintf(stdout, "\t-d --dir\t\ttemporary directory name;\n");
 	fprintf(stdout, "\t-h, --help\t\tprint usage information;\n");
@@ -70,10 +72,6 @@ void defaultize() {
 	free(dir);
 	download(DEFAULT_TMUX_URL, tmux);
 	download(DEFAULT_VIM_URL, vim);
-}
-
-void finalize(char* url) {
-
 }
 
 void customize(int argc, char** argv) {
@@ -108,8 +106,10 @@ void customize(int argc, char** argv) {
 
 	char name[FILENAME_MAX];
 	
-	if (dir)
-		log(info, "dot directory have been created;");	
+	if (!dir) {
+		log(info, "temp dir do not created;");
+		dir = mk_dir(NULL);
+	}
 	for (int i = 0; i < 2; ++i) {
 		snprintf(name, sizeof(name), "%s/%s", dir, tool_name(tool[i].url));
 		download(tool[i].url, name);
