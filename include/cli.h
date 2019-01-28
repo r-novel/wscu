@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include "const.h"
-#include "cfg.h"
+#include "config.h"
 #include "dl.h"
 #include "dir.h"
 

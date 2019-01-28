@@ -1,5 +1,5 @@
-#ifndef _CFG_H_
-#define _CFG_H_
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,4 +33,4 @@ int cfg_tool(const char*, struct cfg_tool*);
 void cfg_tool_free(struct cfg_tool*);
 void test(void);
 
-#endif // _CFG_H_
+#endif // _CONFIG_H_

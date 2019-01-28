@@ -42,9 +42,19 @@ Remove temp directory:
 $ ./bin/wscu --remove=".wscu_custom_dir"
 ```
 
+Run utility using config:
+```
+$ ./bin/wscu --config="config.yaml"
+```
+
 Run utility with custom options:
 ```
 $ ./bin/wscu --dir=".wscu"
+```
+
+Generate workflow configuration file:
+```
+$ ./bin/wscu --configure
 ```
 
 Use help to print usage information:

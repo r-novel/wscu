@@ -43,7 +43,7 @@ void usage(char* argv) {
 	fprintf(stdout, "Usage: %s [OPTIONS]\n", argv);
 	fprintf(stdout, "\t-m --make\t\tmake temporary directory for contain source codes;\n");
 	fprintf(stdout, "\t-c --config\t\tconfig file for download tools;\n");
-	fprintf(stdout, "\t--configure\t\toption for generate work config file;\n");
+	fprintf(stdout, "\t--configure\t\toption for generate workflow config file;\n");
 	fprintf(stdout, "\t-r --remove\t\tremove temporary directory;\n");
 	fprintf(stdout, "\t-d --dir\t\ttemporary directory name;\n");
 	fprintf(stdout, "\t-h, --help\t\tprint usage information;\n");

@@ -1,4 +1,4 @@
-#include "cfg.h"
+#include "config.h"
 #include "log.h"
 
 int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
@@ -112,7 +112,7 @@ int cfg_tool(const char* filename, struct cfg_tool tools[]) {
       return 0;
     }
 
-    void detach(yaml_parser_t p, FILE* fd) {
+    void _detach(yaml_parser_t p, FILE* fd) {
       yaml_parser_delete(&p);
       fclose(fd);
     }
@@ -128,13 +128,13 @@ int cfg_tool(const char* filename, struct cfg_tool tools[]) {
     do {
         if (!yaml_parser_parse(&parser, &event)) {
           log(error, "error with yaml parser;");
-          detach(parser, fd);
+          _detach(parser, fd);
           return 0;
         }
 
         if (!perform(&st, &event, &tools[i])) {
           log(error, "error with perform yaml event;");
-          detach(parser, fd);
+          _detach(parser, fd);
           return 0;
         }
 
@@ -143,7 +143,7 @@ int cfg_tool(const char* filename, struct cfg_tool tools[]) {
         yaml_event_delete(&event);
     } while (st.state != STOP);
 
-    detach(parser, fd);
+    _detach(parser, fd);
     return 1;
 }
 
