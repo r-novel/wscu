@@ -70,6 +70,8 @@ void defaultize() {
 
 void customize(int argc, char** argv) {
 	char* nm = NULL;
+	char* fname = NULL;
+	struct cfg_tool tool[2];
 	int c;
 	const char* short_opt = "hmrdc:";
 	struct option long_opt[] = {
@@ -86,11 +88,11 @@ void customize(int argc, char** argv) {
 				case -1: case 0: break;
 		    case 'm': log(info, "directory %s was created;\n", mk_dir(optarg)); return;
 		    case 'r': nm = optarg; cleaner(nm); return;
-		    case 'c': 
+		    case 'c': fname = optarg; 
 		    case 'd': nm = optarg; break;
 		    case 'h': usage(argv[0]); return;
 		    case ':': case '?': err_msg(argv[0], 0); return;
-		    case 1: 
+		    case 1: log(trace, "Will be added config maker here;"); return;
 		    default: err_msg(argv[0], c); return;
 	    };
 	  };

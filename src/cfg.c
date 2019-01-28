@@ -102,35 +102,48 @@ int perform(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
   return (st->state == ERROR ? 0 : 1);
 }
 
-int cfg_tool(struct cfg_tool tools[]) {
+int cfg_tool(const char* filename, struct cfg_tool tools[]) {
     yaml_parser_t parser;
     yaml_event_t event;
+
+    FILE* fd = fopen(filename, "r");
+    if(!fd) {
+      log(error, "failed to config file;");
+      return 0;
+    }
+
+    void detach(yaml_parser_t p, FILE* fd) {
+      yaml_parser_delete(&p);
+      fclose(fd);
+    }
+
     struct state st = { .state = START, .accepted = 0 };
    
     if(!yaml_parser_initialize(&parser)) 
-      log(error, "error with yaml parse init;\n");
+      log(error, "error with yaml parse init;");
 
-    yaml_parser_set_input_file(&parser, stdin);
+    yaml_parser_set_input_file(&parser, fd);
 
     int i = 0;
     do {
         if (!yaml_parser_parse(&parser, &event)) {
-            log(error, "error with yaml parser;\n");
-            yaml_parser_delete(&parser);
-            return 0;
+          log(error, "error with yaml parser;");
+          detach(parser, fd);
+          return 0;
         }
 
         if (!perform(&st, &event, &tools[i])) {
-            log(error, "error with perform yaml event;\n");
-            yaml_parser_delete(&parser);
-            return 0;
+          log(error, "error with perform yaml event;");
+          detach(parser, fd);
+          return 0;
         }
+
         if (st.accepted)
           i++;
         yaml_event_delete(&event);
     } while (st.state != STOP);
 
-    yaml_parser_delete(&parser);
+    detach(parser, fd);
     return 1;
 }
 
@@ -146,7 +159,7 @@ void cfg_tool_free(struct cfg_tool* in) {
 
 void test(void) {
   struct cfg_tool res[2];
-  int ok = cfg_tool(res);
+  int ok = cfg_tool("", res);
   if (ok) {
     for (int i = 0; i < 2; ++i) {
       log(trace, "Tool struct: res[%d]{ name: %s, url: %s }\n", i, res[i].name, res[i].url);
