@@ -156,15 +156,3 @@ void cfg_tool_free(struct cfg_tool* in) {
   }
 
 }
-
-void test(void) {
-  struct cfg_tool res[2];
-  int ok = cfg_tool("", res);
-  if (ok) {
-    for (int i = 0; i < 2; ++i) {
-      log(trace, "Tool struct: res[%d]{ name: %s, url: %s }\n", i, res[i].name, res[i].url);
-      cfg_tool_free(&res[i]);
-    }
-  } else
-    log(error, "error with get tools from config;\n");
-}
