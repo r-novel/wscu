@@ -49,19 +49,19 @@ ensure-dirs:
 	mkdir -p $(PATH-BIN)
 
 $(PATH-OBJECTS)/main.o: $(PATH-SRC)/main.c
-	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 $(PATH-OBJECTS)/dl.o: $(PATH-SRC)/dl.c
-	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 $(PATH-OBJECTS)/config.o: $(PATH-SRC)/config.c
-	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 $(PATH-OBJECTS)/dir.o: $(PATH-SRC)/dir.c
-	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 $(PATH-OBJECTS)/cli.o: $(PATH-SRC)/cli.c
-	$(CC) "-D__WSCUFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
+	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 wscu: \
 	$(PATH-OBJECTS)/main.o \

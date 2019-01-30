@@ -6,12 +6,18 @@ int perform_generate(struct cfg_tool tools[]) {
   yaml_event_t event;
   struct cfg_tool* t;
 
+  FILE* fout = fopen(DEFAULT_CONFIG_PATH, "wb");
+  if (!fout) {
+    log(warning, "something wrong with create and open output file;");
+    fout = stdout;
+  }
   yaml_emitter_initialize(&emitter);
-  yaml_emitter_set_output_file(&emitter, stdout);
+  yaml_emitter_set_output_file(&emitter, fout);
 
   void _detach(yaml_emitter_t em, yaml_event_t event) {
     log(error, "Failed to emit event %d: %s\n", event.type, em.problem);
     yaml_emitter_delete(&em);
+    fclose(fout);
   }
 
   yaml_stream_start_event_initialize(&event, YAML_UTF8_ENCODING);
@@ -110,6 +116,7 @@ int perform_generate(struct cfg_tool tools[]) {
   }
 
   yaml_emitter_delete(&emitter);
+  fclose(fout);
   return 0;
 }
 

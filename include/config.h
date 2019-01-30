@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <const.h>
 #include <yaml.h>
 
 struct cfg_tool {

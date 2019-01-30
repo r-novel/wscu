@@ -29,7 +29,7 @@
 			default: break; \
 		} \
 		fprintf(stream, "[%s %s]\033[1;94m [%s] [%s():%d]\033%s %s: "msg" \n\033[0m", \
-				__DATE__, __TIME__, __WSCUFILE__, \
+				__DATE__, __TIME__, __WFILE__, \
 				__func__, __LINE__, color, prefix, ##__VA_ARGS__); \
 	} while (0)
 
