@@ -3,17 +3,17 @@
 char* home() {
 	struct passwd* pw = getpwuid(getuid());
 	char* home = pw->pw_dir;
-	if (home) {
-		return home;
-	}
-	return NULL;
+	if (!home)
+		return NULL;
+
+	return home;
 }
 
 char* temp(char* in) {
 	char* name = (char*) malloc(FILENAME_MAX * sizeof(char));
-	if (name == NULL) {
+	if (!name)
 		return NULL;
-	}
+
 	char* dir = home();
 	if (dir) {
 		snprintf(name, FILENAME_MAX * sizeof(char), "%s/%s", dir, in);
