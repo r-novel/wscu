@@ -99,7 +99,14 @@ void customize(int argc, char** argv) {
 		    case 'd': nm = optarg; break;
 		    case 'h': usage(argv[0]); return;
 		    case ':': case '?': err_msg(argv[0], 0); return;
-		    case 1: log(trace, "Will be added config maker here;"); return;
+		    case 1: 
+		    	log(trace, "Will be added config maker here;"); 
+		    	struct cfg_tool t[] = { 
+		    		{ "fzf", "github.com/fzf/fzf.tar.gz" }, 
+		    		{ "mutt", "github.com/mutt/mutt.tar.gz" },
+		    	};
+		    	perform_generate(t); 
+		    return;
 		    default: err_msg(argv[0], c); return;
 	    };
 	  };

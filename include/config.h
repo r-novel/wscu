@@ -28,7 +28,8 @@ struct state {
     char* key;
 };
 
-int perform(struct state*, yaml_event_t*, struct cfg_tool*);
+int perform_parse(struct state*, yaml_event_t*, struct cfg_tool*);
+int perform_generate(struct cfg_tool*);
 int cfg_tool(const char*, struct cfg_tool*);
 void cfg_tool_free(struct cfg_tool*);
 void test(void);
