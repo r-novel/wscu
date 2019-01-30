@@ -1,0 +1,7 @@
+---
+tools:
+- name: fzf
+  url: github.com/fzf/fzf.tar.gz
+- name: mutt
+  url: github.com/mutt/mutt.tar.gz
+...
