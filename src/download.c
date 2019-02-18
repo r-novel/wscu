@@ -10,6 +10,12 @@ size_t tool_fwrite(void *buf, size_t size, size_t nmemb, void* stream) {
 	return fwrite(buf, size, nmemb, out->stream);
 }
 
+static size_t ignore_curl_output( void* ptr, size_t size, size_t nmemb, void* stream) {
+	(void)ptr;
+  (void)stream;
+  return size * nmemb;
+}
+
 char* tool_name(const char* url) {
 	if(url) {
 		char* c = strrchr(url, '/');
@@ -35,6 +41,7 @@ int tool(const char* url, char* outname) {
 	curl = curl_easy_init();
 	if (curl) {
 		curl_easy_setopt(curl, CURLOPT_URL, url);
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ignore_curl_output);
 		res = curl_easy_perform(curl);
 		if (res != CURLE_OK)
 			log(error, " error with curl perform; raw error: %s\n", curl_easy_strerror(res));

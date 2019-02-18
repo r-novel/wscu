@@ -42,6 +42,7 @@ void cleaner(char* in) {
 void usage(char* argv) {
 	fprintf(stdout, "Usage: %s [OPTIONS]\n", argv);
 	fprintf(stdout, "\t-c --config\t\tconfig file for download tools;\n");
+	fprintf(stdout, "\t-r --remove\t\tremove temporary directory;\n");
 	fprintf(stdout, "\t--configure\t\toption for generate workflow config file;\n");
 	fprintf(stdout, "\t-h, --help\t\tprint usage information;\n");
 }
@@ -53,11 +54,6 @@ void err_msg(char* argv, int c) {
 	fprintf(stderr, "Try `%s --help' for more information.\n", argv);
 }
 
-/* 
-TODO rework or delete that function;
-What do with struct cfg_tool? However, field name need to create humanize configuration file;
-Maybe field name will be delete;
-*/
 void defaultize() {
 	char tmux[FILENAME_MAX];
 	char vim[FILENAME_MAX];
@@ -105,10 +101,10 @@ void customize(int argc, char** argv) {
 
 	char name[FILENAME_MAX];
 	
-	if (!dir) {
-		log(info, "temp dir do not created;");
-		dir = mk_dir(NULL);
-	}
+	cleaner(NULL);
+	log(info, "temp dir do not created;");
+	dir = mk_dir(NULL);
+	
 	for (int i = 0; i < 2; ++i) {
 		snprintf(name, sizeof(name), "%s/%s", dir, tool_name(tool[i].url));
 		download(tool[i].url, name);
