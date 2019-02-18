@@ -51,7 +51,7 @@ ensure-dirs:
 $(PATH-OBJECTS)/main.o: $(PATH-SRC)/main.c
 	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
-$(PATH-OBJECTS)/dl.o: $(PATH-SRC)/dl.c
+$(PATH-OBJECTS)/download.o: $(PATH-SRC)/download.c
 	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 $(PATH-OBJECTS)/config.o: $(PATH-SRC)/config.c
@@ -65,7 +65,7 @@ $(PATH-OBJECTS)/cli.o: $(PATH-SRC)/cli.c
 
 wscu: \
 	$(PATH-OBJECTS)/main.o \
-	$(PATH-OBJECTS)/dl.o \
+	$(PATH-OBJECTS)/download.o \
 	$(PATH-OBJECTS)/config.o \
 	$(PATH-OBJECTS)/dir.o \
 	$(PATH-OBJECTS)/cli.o
