@@ -1,4 +1,4 @@
-#include "dl.h"
+#include "download.h"
 
 size_t tool_fwrite(void *buf, size_t size, size_t nmemb, void* stream) {
 	struct tool_t* out = (struct tool_t*)stream;

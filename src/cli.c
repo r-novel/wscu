@@ -41,11 +41,8 @@ void cleaner(char* in) {
 
 void usage(char* argv) {
 	fprintf(stdout, "Usage: %s [OPTIONS]\n", argv);
-	fprintf(stdout, "\t-m --make\t\tmake temporary directory for contain source codes;\n");
 	fprintf(stdout, "\t-c --config\t\tconfig file for download tools;\n");
 	fprintf(stdout, "\t--configure\t\toption for generate workflow config file;\n");
-	fprintf(stdout, "\t-r --remove\t\tremove temporary directory;\n");
-	fprintf(stdout, "\t-d --dir\t\ttemporary directory name;\n");
 	fprintf(stdout, "\t-h, --help\t\tprint usage information;\n");
 }
 
@@ -75,7 +72,6 @@ void defaultize() {
 }
 
 void customize(int argc, char** argv) {
-	char* nm = NULL;
 	char* fname = NULL;
 	char* dir = NULL;
 	struct cfg_tool tool[2];
@@ -83,20 +79,16 @@ void customize(int argc, char** argv) {
 	const char* short_opt = "hmrdc:";
 	struct option long_opt[] = {
 		{ "help", no_argument, NULL, 'h' },
-		{ "make", required_argument, NULL, 'm' },
 		{	"config", required_argument, NULL, 'c' },
+		{ "remove", no_argument, NULL, 'r'},
 		{ "configure", no_argument, NULL, 1 },
-		{ "remove", required_argument, NULL, 'r' },
-		{ "dir", required_argument, NULL, 'd' },
 		{ NULL, 0, NULL, 0}
 	};
 	while((c = getopt_long(argc, argv, short_opt, long_opt, NULL)) != -1) {
 	    switch(c) {
 				case -1: case 0: break;
-		    case 'm': log(info, "directory %s was created;\n", dir = mk_dir(optarg)); break;
-		    case 'r': nm = optarg; cleaner(nm); return;
+		    case 'r': cleaner(NULL); return;
 		    case 'c': fname = optarg; cfg_tool(fname, tool); break;
-		    case 'd': nm = optarg; break;
 		    case 'h': usage(argv[0]); return;
 		    case ':': case '?': err_msg(argv[0], 0); return;
 		    case 1: 

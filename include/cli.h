@@ -7,7 +7,7 @@
 #include <getopt.h>
 #include "const.h"
 #include "config.h"
-#include "dl.h"
+#include "download.h"
 #include "dir.h"
 
 void download(const char*, char*);

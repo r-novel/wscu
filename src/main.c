@@ -1,7 +1,7 @@
 #include <ncurses.h>
 
 #include "cli.h"
-
+#include <stdio.h>
 
 void Do(int argc, char** argv) {
 	if (argc < 2) {
