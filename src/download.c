@@ -10,9 +10,9 @@ size_t tool_fwrite(void *buf, size_t size, size_t nmemb, void* stream) {
 	return fwrite(buf, size, nmemb, out->stream);
 }
 
-size_t ignore_curl_output( void *ptr, size_t size, size_t nmemb, void *stream) {
-	(void) ptr;
-  (void) stream;
+static size_t ignore_curl_output( void* ptr, size_t size, size_t nmemb, void* stream) {
+	(void)ptr;
+  (void)stream;
   return size * nmemb;
 }
 
