@@ -1,8 +1,9 @@
 #include "archive.h"
 
-int unpack(const char* fname, const char* dest) {
+int unpack(char* fname, char* dest) {
 	TAR* tar;
-	if (tar_open(tar, fname, NULL, O_RDONLY, 0644, TAR_GNU) != 0) {
+	printf("name %s\n", fname);
+	if (tar_open(&tar, fname, NULL, O_RDONLY, 0644, TAR_GNU) != 0) {
 		log(error, "fail to open tar file");
 		return -1;
 	}
@@ -11,6 +12,7 @@ int unpack(const char* fname, const char* dest) {
 		return -1;
 	}
 
+	log(info, "tar file have been extracted successfully;");	
 	tar_close(tar);
 	return 1;
 }

@@ -3,9 +3,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <libtar.h>
 #include "log.h"
 
-int unpack(const char*, const char*);
+int unpack(char*, char*);
 
 #endif // _ARCHIVE_H_
