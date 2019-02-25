@@ -9,7 +9,19 @@ Utility have been wrote using C language and ncurses library;
 First of all you need install ncurses library using apt-get or another package manager:
 
 ```
-$ sudo apt-get install -y libncurses5-dev libncurses5
+$ sudo apt-get install -y libncurses5-dev libncurses5 libcurl-dev
+```
+
+Download and build libarchive:
+```
+$ curl -LO https://github.com/libarchive/libarchive/archive/v3.3.1.tar.gz
+```
+```
+$ tar -xvf v3.3.1.tar.gz && cd v3.3.1
+```
+
+```
+$ ./configure && make install
 ```
 
 Then build test program:
@@ -32,14 +44,9 @@ Create temp dot directory and download tools using default variables:
 $ ./bin/wscu
 ```
 
-Make temp directory:
+Clean temp directory:
 ```
-$ ./bin/wscu --make=".wscu_custom_dir"
-```
-
-Remove temp directory:
-```
-$ ./bin/wscu --remove=".wscu_custom_dir"
+$ ./bin/wscu --remove
 ```
 
 Run utility using config:
@@ -47,9 +54,8 @@ Run utility using config:
 $ ./bin/wscu --config="config.yaml"
 ```
 
-Run utility with custom options:
 ```
-$ ./bin/wscu --dir=".wscu"
+$ ./bin/wscu -c ./config/config.yaml
 ```
 
 Generate workflow configuration file:
