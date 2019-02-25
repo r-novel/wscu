@@ -9,8 +9,8 @@ PATH-OBJECTS := $(PATH-BIN)
 CC := gcc
 
 CFLAGS := -O1 -std=c99 -pipe -I$(PATH-INCLUDE)
-WFLAGS := -Wall -Werror
-LDFLAGS := -lncurses -lcurl -lyaml -ltar
+WFLAGS := -Wall
+LDFLAGS := -lncurses -lcurl -lyaml -larchive
 
 .DEFAULT: default
 .PHONY: all default build
@@ -63,7 +63,7 @@ $(PATH-OBJECTS)/dir.o: $(PATH-SRC)/dir.c
 $(PATH-OBJECTS)/cli.o: $(PATH-SRC)/cli.c
 	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
-$(PATH-OBJECTS)/archive.o: $(PATH-SRC)/archive.c
+$(PATH-OBJECTS)/extract.o: $(PATH-SRC)/extract.c
 	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 wscu: \
@@ -72,5 +72,5 @@ wscu: \
 	$(PATH-OBJECTS)/config.o \
 	$(PATH-OBJECTS)/dir.o \
 	$(PATH-OBJECTS)/cli.o \
-	$(PATH-OBJECTS)/archive.o
+	$(PATH-OBJECTS)/extract.o
 	$(CC) $(CFLAGS) $(WFLAGS) -o $(PATH-BIN)/$@ $+ $(LDFLAGS)

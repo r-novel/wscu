@@ -101,24 +101,16 @@ void customize(int argc, char** argv) {
 	  };
 
 	char name[FILENAME_MAX];
-	char test_buffer[FILENAME_MAX];
-	char fin_name[FILENAME_MAX];
-	
+
 	cleaner(NULL);
-	char* dec_const[2] = {DEFAULT_TMUX_URL_DECOMPRESSED, DEFAULT_VIM_URL_DECOMPRESSED}; 
 	log(info, "temp dir do not created;");
 	dir = mk_dir(NULL);
 	
 	for (int i = 0; i < 2; ++i) {
 		snprintf(name, sizeof(name), "%s/%s", dir, tool_name(tool[i].url));
 		download(tool[i].url, name);
-		snprintf(test_buffer, sizeof(test_buffer), "gzip -d %s", name);
-		system(test_buffer);
-		snprintf(fin_name, sizeof(fin_name), "%s/%s", dir, dec_const[i]);
-		unpack(fin_name, dir);
+		extract(name);
 	}
-
-
 
 	for(int i = 0; i < 2; ++i) {
 		cfg_tool_free(&tool[i]);

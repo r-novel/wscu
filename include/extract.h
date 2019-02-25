@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include <libtar.h>
+#include <archive.h>
 #include "log.h"
 
-int unpack(char*, char*);
+int extract(const char*);
 
 #endif // _ARCHIVE_H_
