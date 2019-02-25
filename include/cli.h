@@ -9,6 +9,7 @@
 #include "config.h"
 #include "download.h"
 #include "dir.h"
+#include "extract.h"
 
 void download(const char*, char*);
 void cleaner(char*);

@@ -70,6 +70,7 @@ void defaultize() {
 void customize(int argc, char** argv) {
 	char* fname = NULL;
 	char* dir = NULL;
+	
 	struct cfg_tool tool[2];
 	int c;
 	const char* short_opt = "hmrdc:";
@@ -100,7 +101,7 @@ void customize(int argc, char** argv) {
 	  };
 
 	char name[FILENAME_MAX];
-	
+
 	cleaner(NULL);
 	log(info, "temp dir do not created;");
 	dir = mk_dir(NULL);
@@ -108,6 +109,7 @@ void customize(int argc, char** argv) {
 	for (int i = 0; i < 2; ++i) {
 		snprintf(name, sizeof(name), "%s/%s", dir, tool_name(tool[i].url));
 		download(tool[i].url, name);
+		extract(name);
 	}
 
 	for(int i = 0; i < 2; ++i) {
