@@ -3,15 +3,15 @@
 
 static int copy_data(struct archive* ar, struct archive* aw) {
   int r;
-  const void *buff;
+  const void* buf;
   size_t size;
   la_int64_t offset;
 
   for (;;) {
-    r = archive_read_data_block(ar, &buff, &size, &offset);
+    r = archive_read_data_block(ar, &buf, &size, &offset);
     if (r == ARCHIVE_EOF) return ARCHIVE_OK;
     if (r < ARCHIVE_OK) return r;
-    r = archive_write_data_block(aw, buff, size, offset);
+    r = archive_write_data_block(aw, buf, size, offset);
     if (r < ARCHIVE_OK) {
       log(error, "%s\n", archive_error_string(aw));
       return r;
@@ -19,10 +19,10 @@ static int copy_data(struct archive* ar, struct archive* aw) {
   }
 }
 
-int extract(const char *filename) {
-  struct archive *a;
-  struct archive *ext;
-  struct archive_entry *entry;
+int extract(const char* in) {
+  struct archive* a;
+  struct archive* ext;
+  struct archive_entry* entry;
   int flags;
   int r;
 
@@ -37,8 +37,8 @@ int extract(const char *filename) {
   ext = archive_write_disk_new();
   archive_write_disk_set_options(ext, flags);
   archive_write_disk_set_standard_lookup(ext);
-  if ((r = archive_read_open_filename(a, filename, 10240)))
-    return -1;
+  if ((r = archive_read_open_filename(a, in, 10240)))
+    goto err;
   for (;;) {
     r = archive_read_next_header(a, &entry);
     if (r == ARCHIVE_EOF)
@@ -46,7 +46,7 @@ int extract(const char *filename) {
     if (r < ARCHIVE_OK)
       log(error, "%s\n", archive_error_string(a));
     if (r < ARCHIVE_WARN)
-      return -1;
+      goto err;
     r = archive_write_header(ext, entry);
     if (r < ARCHIVE_OK)
       log(error, "%s\n", archive_error_string(ext));
@@ -55,17 +55,23 @@ int extract(const char *filename) {
       if (r < ARCHIVE_OK)
         log(error, "%s\n", archive_error_string(ext));
       if (r < ARCHIVE_WARN)
-        return -1;
+        goto err;
     }
     r = archive_write_finish_entry(ext);
     if (r < ARCHIVE_OK)
       log(error, "%s\n", archive_error_string(ext));
     if (r < ARCHIVE_WARN)
-      return -1;
+      goto err;
   }
+
   archive_read_close(a);
   archive_read_free(a);
   archive_write_close(ext);
   archive_write_free(ext);
   return 1;
+
+err:
+  log(error, "something wrong with extract archive; exit code is -1;\n");
+  return -1;
+
 }
