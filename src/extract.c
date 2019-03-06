@@ -1,6 +1,20 @@
 #include <stdio.h>
 #include <extract.h>
 
+char* remove_extension(char* mystr) {
+  char* retstr;
+  char* lastdot;
+  if (mystr == NULL)
+    return NULL;
+  if ((retstr = malloc (strlen (mystr) + 1)) == NULL)
+    return NULL;
+  strcpy(retstr, mystr);
+  lastdot = strrchr(retstr, '.');
+  if (lastdot != NULL)
+      *lastdot = '\0';
+  return retstr;
+}
+
 static int copy_data(struct archive* ar, struct archive* aw) {
   int r;
   const void* buf;
@@ -30,13 +44,20 @@ int extract(const char* in) {
   flags |= ARCHIVE_EXTRACT_PERM;
   flags |= ARCHIVE_EXTRACT_ACL;
   flags |= ARCHIVE_EXTRACT_FFLAGS;
+  char* name = remove_extension(in);
+  char* name2 = remove_extension(name);
 
   a = archive_read_new();
   archive_read_support_format_all(a);
   archive_read_support_filter_all(a);
   ext = archive_write_disk_new();
   archive_write_disk_set_options(ext, flags);
+  entry = archive_entry_new();
+  archive_entry_set_pathname(entry, name2);
   archive_write_disk_set_standard_lookup(ext);
+  // printf("~~~~~~~~> %s\n", in);
+
+  printf("~~~~~~~~> 22 %s\n", name2);
   if ((r = archive_read_open_filename(a, in, 10240)))
     goto err;
   for (;;) {
@@ -63,6 +84,8 @@ int extract(const char* in) {
     if (r < ARCHIVE_WARN)
       goto err;
   }
+  // printf("~~~~~> 2%s\n", a);
+  // printf("~~~~~~~3%s\n", r);
 
   archive_read_close(a);
   archive_read_free(a);
