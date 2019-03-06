@@ -4,9 +4,9 @@ void download(const char* url, char* out) {
 	int res = tool(url, out);
 	if (res < 0) {
 		switch (res) {
-			case -1: log(error, " error with open output file; error code is: %d\n", res); break;
-			case -2: log(error, " error with redirect; error code is: %d\n", res); break;
-			case -3: log(error, " error with curl init; error code is: %d\n", res); break;
+			case -1: log(error, " error with open output file; error code is: %d", res); break;
+			case -2: log(error, " error with redirect; error code is: %d", res); break;
+			case -3: log(error, " error with curl init; error code is: %d", res); break;
 			default: break;
 		}
 	}
@@ -21,21 +21,21 @@ void cleaner(char* in) {
 	if (out) {
 		ok = rm_dir(out);
 		if (ok == 0) {
-			log(info, "tmp directory removed successfully;\n");
+			log(info, "tmp directory removed successfully;");
 			return;
 		} else {
 			ok = rm_dir(temp(DEFAULT_DIR_NAME));
 			if (ok == 0) {
-				log(warning, "tmp directory (using default) removed successfully;\n");
+				log(warning, "tmp directory (using default) removed successfully;");
 				return;
 			} else {
-				log(error, "tmp directory remove failed;\n");
+				log(error, "tmp directory remove failed;");
 				return;
 			}
 		}
 	}
 
-	log(error, "something wrong with got tmp dir;\n");
+	log(error, "something wrong with got tmp dir;");
 	return;
 }
 
@@ -71,7 +71,7 @@ void customize(int argc, char** argv) {
 	char* fname = NULL;
 	char* dir = NULL;
 	
-	struct cfg_tool tool[2];
+	struct cfg_tool tool[3];
 	int c;
 	const char* short_opt = "hmrdc:";
 	struct option long_opt[] = {
@@ -106,13 +106,13 @@ void customize(int argc, char** argv) {
 	log(info, "temp dir do not created;");
 	dir = mk_dir(NULL);
 	
-	for (int i = 0; i < 2; ++i) {
+	for (int i = 0; i < 3; ++i) {
 		snprintf(name, sizeof(name), "%s/%s", dir, tool_name(tool[i].url));
 		download(tool[i].url, name);
 		extract(name);
 	}
 
-	for(int i = 0; i < 2; ++i) {
+	for(int i = 0; i < 3; ++i) {
 		cfg_tool_free(&tool[i]);
 	}
 	free(dir);
