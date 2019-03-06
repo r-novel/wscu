@@ -9,7 +9,7 @@ PATH-OBJECTS := $(PATH-BIN)
 CC := gcc
 
 CFLAGS := -O1 -std=c99 -pipe -I$(PATH-INCLUDE)
-WFLAGS := -Wall
+WFLAGS := -Wall -Werror
 LDFLAGS := -lncurses -lcurl -lyaml -larchive
 
 .DEFAULT: default
