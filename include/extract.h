@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <archive.h>
+#include <archive_entry.h>
+#include "dir.h"
+#include "const.h"
 #include "log.h"
 
 int extract(const char*);
