@@ -66,11 +66,15 @@ $(PATH-OBJECTS)/cli.o: $(PATH-SRC)/cli.c
 $(PATH-OBJECTS)/extract.o: $(PATH-SRC)/extract.c
 	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
+$(PATH-OBJECTS)/install.o: $(PATH-SRC)/install.c
+	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@	
+
 wscu: \
 	$(PATH-OBJECTS)/main.o \
 	$(PATH-OBJECTS)/download.o \
 	$(PATH-OBJECTS)/config.o \
 	$(PATH-OBJECTS)/dir.o \
 	$(PATH-OBJECTS)/cli.o \
-	$(PATH-OBJECTS)/extract.o
+	$(PATH-OBJECTS)/extract.o \
+	$(PATH-OBJECTS)/install.o	
 	$(CC) $(CFLAGS) $(WFLAGS) -o $(PATH-BIN)/$@ $+ $(LDFLAGS)
