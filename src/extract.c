@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <extract.h>
+#include "extract.h"
 
 static int copy_data(struct archive* ar, struct archive* aw) {
   int r;

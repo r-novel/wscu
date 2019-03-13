@@ -10,6 +10,7 @@
 #include "download.h"
 #include "dir.h"
 #include "extract.h"
+#include "install.h"
 
 void download(const char*, char*);
 void cleaner(char*);

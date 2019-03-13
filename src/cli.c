@@ -112,6 +112,10 @@ void customize(int argc, char** argv) {
 		extract(name);
 	}
 
+	char test_exec[FILENAME_MAX];
+	snprintf(test_exec, sizeof(test_exec), "%s/%s", dir, TEST_NAME);
+	configure(test_exec, NULL);
+
 	for(int i = 0; i < 3; ++i) {
 		cfg_tool_free(&tool[i]);
 	}
