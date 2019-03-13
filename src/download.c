@@ -34,10 +34,10 @@ int tool(const char* url, char* outname) {
 	char* location;
 	long resp_code;
 	CURLcode res;
-	
+
 	struct tool_t out = {outname, NULL};
 	curl_global_init(CURL_GLOBAL_DEFAULT);
-	
+
 	curl = curl_easy_init();
 	if (curl) {
 		curl_easy_setopt(curl, CURLOPT_URL, url);
@@ -60,7 +60,7 @@ int tool(const char* url, char* outname) {
         }
       }
 		}
-				
+
 		if (out.stream)
 			fclose(out.stream);
 

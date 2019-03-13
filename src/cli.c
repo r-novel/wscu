@@ -70,7 +70,7 @@ void defaultize() {
 void customize(int argc, char** argv) {
 	char* fname = NULL;
 	char* dir = NULL;
-	
+
 	struct cfg_tool tool[3];
 	int c;
 	const char* short_opt = "hmrdc:";
@@ -82,39 +82,39 @@ void customize(int argc, char** argv) {
 		{ NULL, 0, NULL, 0}
 	};
 	while((c = getopt_long(argc, argv, short_opt, long_opt, NULL)) != -1) {
-	    switch(c) {
-				case -1: case 0: break;
-		    case 'r': cleaner(NULL); return;
-		    case 'c': fname = optarg; cfg_tool(fname, tool); break;
-		    case 'h': usage(argv[0]); return;
-		    case ':': case '?': err_msg(argv[0], 0); return;
-		    case 1: 
-		    	log(trace, "Will be added config maker here;"); 
-		    	struct cfg_tool t[] = { 
-		    		{ "fzf", "github.com/fzf/fzf.tar.gz" }, 
-		    		{ "mutt", "github.com/mutt/mutt.tar.gz" },
-		    	};
-		    	perform_generate(t); 
-		    return;
-		    default: err_msg(argv[0], c); return;
-	    };
-	  };
+    switch(c) {
+			case -1: case 0: break;
+	    case 'r': cleaner(NULL); return;
+	    case 'c': fname = optarg; cfg_tool(fname, tool); break;
+	    case 'h': usage(argv[0]); return;
+	    case ':': case '?': err_msg(argv[0], 0); return;
+	    case 1:
+				log(trace, "Will be added config maker here;");
+				struct cfg_tool t[] = {
+					{ "fzf", "github.com/fzf/fzf.tar.gz" },
+					{ "mutt", "github.com/mutt/mutt.tar.gz" },
+				};
+				perform_generate(t);
+				return;
+	    default: err_msg(argv[0], c); return;
+    };
+	};
 
 	char name[FILENAME_MAX];
 
 	cleaner(NULL);
 	log(info, "temp dir do not created;");
 	dir = mk_dir(NULL);
-	
+
 	for (int i = 0; i < 3; ++i) {
 		snprintf(name, sizeof(name), "%s/%s", dir, tool_name(tool[i].url));
 		download(tool[i].url, name);
 		extract(name);
 	}
 
-	char test_exec[FILENAME_MAX];
-	snprintf(test_exec, sizeof(test_exec), "%s/%s", dir, TEST_NAME);
-	configure(test_exec, NULL);
+	// char test_exec[FILENAME_MAX];
+	// snprintf(test_exec, sizeof(test_exec), "%s/%s", dir, TEST_NAME);
+	// configure(test_exec, NULL);
 
 	for(int i = 0; i < 3; ++i) {
 		cfg_tool_free(&tool[i]);

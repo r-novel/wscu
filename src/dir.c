@@ -46,7 +46,7 @@ char* mk_dir(char* name) {
 		int ok = create(nm);
 		if (ok)
 			return nm;
-		else 
+		else
 			return NULL;
 	}
 	return NULL;
@@ -56,7 +56,7 @@ int rm_dir(char* in) {
 	DIR* dir = opendir(in);
 	size_t in_len = strlen(in);
 	int res = -1;
-	
+
 	if (dir) {
 		struct dirent* p;
 		res = 0;
@@ -69,7 +69,7 @@ int rm_dir(char* in) {
 			if (!strcmp(p->d_name, ".") || !strcmp(p->d_name, ".."))
 				continue;
 
-			len = in_len + strlen(p->d_name) + 2; 
+			len = in_len + strlen(p->d_name) + 2;
 			buf = (char*)malloc(len);
 
 			if (buf) {

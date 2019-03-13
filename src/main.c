@@ -12,7 +12,7 @@ void Do(int argc, char** argv) {
 }
 
 int main(int argc, char** argv) {
-	
+
 	// char mesg[] = "Hello world!";
 	// int row, col;
 	// initscr();

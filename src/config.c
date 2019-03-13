@@ -169,14 +169,14 @@ int perform_parse(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
             memset(t, 0, sizeof(*t));
             st->state = KEY;
           break;
-          case YAML_SEQUENCE_END_EVENT: 
-            st->state = START; 
+          case YAML_SEQUENCE_END_EVENT:
+            st->state = START;
           break;
           case YAML_DOCUMENT_END_EVENT:
-            st->state = START; 
+            st->state = START;
           break;
           default:
-            log(warning, "Unexpected event while getting mapped values: %d\n", event->type);  
+            log(warning, "Unexpected event while getting mapped values: %d\n", event->type);
             st->state = ERROR;
           break;
         }
@@ -218,7 +218,7 @@ int perform_parse(struct state* st, yaml_event_t* event, struct cfg_tool* t) {
       break;
       case ERROR: case STOP: break;
     }
-      
+
   return (st->state == ERROR ? 0 : 1);
 }
 
@@ -238,8 +238,8 @@ int cfg_tool(const char* filename, struct cfg_tool tools[]) {
     }
 
     struct state st = { .state = START, .accepted = 0 };
-   
-    if(!yaml_parser_initialize(&parser)) 
+
+    if(!yaml_parser_initialize(&parser))
       log(error, "error with yaml parse init;");
 
     yaml_parser_set_input_file(&parser, fd);
