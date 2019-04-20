@@ -40,18 +40,18 @@ void cleaner(char* in) {
 }
 
 void usage(char* argv) {
-	fprintf(stdout, "Usage: %s [OPTIONS]\n", argv);
-	fprintf(stdout, "\t-c --config\t\tconfig file for download tools;\n");
-	fprintf(stdout, "\t-r --remove\t\tremove temporary directory;\n");
-	fprintf(stdout, "\t--configure\t\toption for generate workflow config file;\n");
-	fprintf(stdout, "\t-h, --help\t\tprint usage information;\n");
+	log(info, "Usage: %s [OPTIONS]\n
+		\t-c --config\t\tconfig file for download tools\n
+		\t-r --remove\t\tremove temporary dir;\n
+		\t--configure\t\toption for generate workflow config file;\n
+		\t-h, --help\t\tprint usage information;\n", argv);
 }
 
 void err_msg(char* argv, int c) {
 	if(c) {
-	fprintf(stderr, "%s: invalid option --%c\n", argv, c);
+	log(error, "%s: invalid option --%c\n", argv, c);
 	}
-	fprintf(stderr, "Try `%s --help' for more information.\n", argv);
+	log(error, "Try `%s --help' for more information.\n", argv);
 }
 
 void defaultize() {

@@ -14,7 +14,7 @@ int perform_generate(struct cfg_tool tools[]) {
   yaml_emitter_initialize(&emitter);
   yaml_emitter_set_output_file(&emitter, fout);
 
-  void _detach(yaml_emitter_t em, yaml_event_t event) {
+  void failure(yaml_emitter_t em, yaml_event_t event) {
     log(error, "Failed to emit event %d: %s\n", event.type, em.problem);
     yaml_emitter_delete(&em);
     fclose(fout);
@@ -22,96 +22,96 @@ int perform_generate(struct cfg_tool tools[]) {
 
   yaml_stream_start_event_initialize(&event, YAML_UTF8_ENCODING);
   if (!yaml_emitter_emit(&emitter, &event)) {
-    _detach(emitter, event);
+    failure(emitter, event);
     return 1;
   }
 
   yaml_document_start_event_initialize(&event, NULL, NULL, NULL, 0);
   if (!yaml_emitter_emit(&emitter, &event)) {
-    _detach(emitter, event);
+    failure(emitter, event);
     return 1;
   }
 
   yaml_mapping_start_event_initialize(&event, NULL, (yaml_char_t *)YAML_MAP_TAG,
       1, YAML_ANY_MAPPING_STYLE);
   if (!yaml_emitter_emit(&emitter, &event)) {
-    _detach(emitter, event);
+    failure(emitter, event);
     return 1;
   }
   yaml_scalar_event_initialize(&event, NULL, (yaml_char_t *)YAML_STR_TAG,
       (yaml_char_t *)"tools", strlen("tools"), 1, 0, YAML_PLAIN_SCALAR_STYLE);
   if (!yaml_emitter_emit(&emitter, &event)) {
-    _detach(emitter, event);
+    failure(emitter, event);
     return 1;
   }
   yaml_sequence_start_event_initialize(&event, NULL, (yaml_char_t *)YAML_SEQ_TAG,
      1, YAML_ANY_SEQUENCE_STYLE);
   if (!yaml_emitter_emit(&emitter, &event)) {
-    _detach(emitter, event);
+    failure(emitter, event);
     return 1;
   }
   for (t = tools; t->name; t++) {
     yaml_mapping_start_event_initialize(&event, NULL, (yaml_char_t *)YAML_MAP_TAG,
       1, YAML_ANY_MAPPING_STYLE);
     if (!yaml_emitter_emit(&emitter, &event)) {
-      _detach(emitter, event);
+      failure(emitter, event);
       return 1;
     }
     yaml_scalar_event_initialize(&event, NULL, (yaml_char_t *)YAML_STR_TAG,
       (yaml_char_t *)"name", strlen("name"), 1, 0, YAML_PLAIN_SCALAR_STYLE);
     if (!yaml_emitter_emit(&emitter, &event)) {
-      _detach(emitter, event);
+      failure(emitter, event);
       return 1;
     }
     yaml_scalar_event_initialize(&event, NULL, (yaml_char_t *)YAML_STR_TAG,
       (yaml_char_t *)t->name, strlen(t->name), 1, 0, YAML_PLAIN_SCALAR_STYLE);
     if (!yaml_emitter_emit(&emitter, &event)) {
-      _detach(emitter, event);
+      failure(emitter, event);
       return 1;
     }
 
     yaml_scalar_event_initialize(&event, NULL, (yaml_char_t *)YAML_STR_TAG,
       (yaml_char_t *)"url", strlen("url"), 1, 0, YAML_PLAIN_SCALAR_STYLE);
     if (!yaml_emitter_emit(&emitter, &event)) {
-      _detach(emitter, event);
+      failure(emitter, event);
       return 1;
     }
 
     yaml_scalar_event_initialize(&event, NULL, (yaml_char_t *)YAML_STR_TAG,
       (yaml_char_t *)t->url, strlen(t->url), 1, 0, YAML_PLAIN_SCALAR_STYLE);
     if (!yaml_emitter_emit(&emitter, &event)) {
-      _detach(emitter, event);
+      failure(emitter, event);
       return 1;
     }
 
     yaml_mapping_end_event_initialize(&event);
     if (!yaml_emitter_emit(&emitter, &event)) {
-      _detach(emitter, event);
+      failure(emitter, event);
       return 1;
     }
   }
 
   yaml_sequence_end_event_initialize(&event);
   if (!yaml_emitter_emit(&emitter, &event)) {
-    _detach(emitter, event);
+    failure(emitter, event);
     return 1;
   }
 
   yaml_mapping_end_event_initialize(&event);
   if (!yaml_emitter_emit(&emitter, &event)) {
-    _detach(emitter, event);
+    failure(emitter, event);
     return 1;
   }
 
   yaml_document_end_event_initialize(&event, 0);
   if (!yaml_emitter_emit(&emitter, &event)) {
-    _detach(emitter, event);
+    failure(emitter, event);
     return 1;
   }
 
   yaml_stream_end_event_initialize(&event);
   if (!yaml_emitter_emit(&emitter, &event)) {
-    _detach(emitter, event);
+    failure(emitter, event);
     return 1;
   }
 
@@ -232,7 +232,7 @@ int cfg_tool(const char* filename, struct cfg_tool tools[]) {
       return 0;
     }
 
-    void _detach(yaml_parser_t p, FILE* fd) {
+    void failure(yaml_parser_t p, FILE* fd) {
       yaml_parser_delete(&p);
       fclose(fd);
     }
@@ -248,13 +248,13 @@ int cfg_tool(const char* filename, struct cfg_tool tools[]) {
     do {
         if (!yaml_parser_parse(&parser, &event)) {
           log(error, "error with yaml parser;");
-          _detach(parser, fd);
+          failure(parser, fd);
           return 0;
         }
 
         if (!perform_parse(&st, &event, &tools[i])) {
           log(error, "error with perform yaml event;");
-          _detach(parser, fd);
+          failure(parser, fd);
           return 0;
         }
 
@@ -263,7 +263,7 @@ int cfg_tool(const char* filename, struct cfg_tool tools[]) {
         yaml_event_delete(&event);
     } while (st.state != STOP);
 
-    _detach(parser, fd);
+    failure(parser, fd);
     return 1;
 }
 
