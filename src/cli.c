@@ -40,10 +40,10 @@ void cleaner(char* in) {
 }
 
 void usage(char* argv) {
-	log(info, "Usage: %s [OPTIONS]\n
-		\t-c --config\t\tconfig file for download tools\n
-		\t-r --remove\t\tremove temporary dir;\n
-		\t--configure\t\toption for generate workflow config file;\n
+	log(info, "Usage: %s [OPTIONS]\n \
+		\t-c --config\t\tconfig file for download tools\n \
+		\t-r --remove\t\tremove temporary dir;\n \
+		\t--configure\t\toption for generate workflow config file;\n \
 		\t-h, --help\t\tprint usage information;\n", argv);
 }
 

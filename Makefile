@@ -8,7 +8,7 @@ PATH-OBJECTS := $(PATH-BIN)
 
 CC := gcc
 
-CFLAGS := -O1 -std=c99 -pipe -I$(PATH-INCLUDE)
+CFLAGS := -O1 -std=gnu99 -pipe -I$(PATH-INCLUDE)
 WFLAGS := -Wall -Werror
 LDFLAGS := -lncurses -lcurl -lyaml -larchive
 
@@ -19,7 +19,7 @@ LDFLAGS := -lncurses -lcurl -lyaml -larchive
 default: build
 build: project-name ensure-dirs wscu
 
-project-name: 
+project-name:
 	@echo \
 		-e \
 		"\x1B[1;33m \\n" \
@@ -67,7 +67,7 @@ $(PATH-OBJECTS)/extract.o: $(PATH-SRC)/extract.c
 	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 $(PATH-OBJECTS)/install.o: $(PATH-SRC)/install.c
-	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@	
+	$(CC) "-D__WFILE__=\"`basename $<`\"" $(CFLAGS) $(WFLAGS) -c -fPIC $< -o $@
 
 wscu: \
 	$(PATH-OBJECTS)/main.o \
@@ -76,5 +76,5 @@ wscu: \
 	$(PATH-OBJECTS)/dir.o \
 	$(PATH-OBJECTS)/cli.o \
 	$(PATH-OBJECTS)/extract.o \
-	$(PATH-OBJECTS)/install.o	
+	$(PATH-OBJECTS)/install.o
 	$(CC) $(CFLAGS) $(WFLAGS) -o $(PATH-BIN)/$@ $+ $(LDFLAGS)

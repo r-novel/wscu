@@ -11,6 +11,7 @@
 #include "dir.h"
 #include "extract.h"
 #include "install.h"
+#include "log.h"
 
 void download(const char*, char*);
 void cleaner(char*);
