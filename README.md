@@ -20,6 +20,16 @@ $ curl -LO https://github.com/libarchive/libarchive/archive/v3.3.1.tar.gz
 $ tar -xvf v3.3.1.tar.gz && cd v3.3.1
 ```
 
+Download and build libyaml:
+```
+$ git clone https://github.com/yaml/libyaml
+```
+```
+$ ./bootstrap
+$ ./configure
+$ make && make install
+```
+
 ```
 $ ./configure && make install
 ```
