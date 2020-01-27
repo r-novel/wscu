@@ -1,0 +1,10 @@
+version: "3.6"
+
+services:
+  userspace-build:
+    build:
+      dockerfile: ./dockerfiles/us/Dockerfile
+      context: ..
+      target: us-build
+    hostname: us-build
+    container_name: us-build
